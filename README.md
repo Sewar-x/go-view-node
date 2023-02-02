@@ -29,6 +29,7 @@ npm start
 └── tmp             文件上传临时目录
     └── upload/tmp
 ```
+### 数据库脚本参考db/mysql.sql
 
 ### 配置信息在config文件中
 ```
