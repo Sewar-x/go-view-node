@@ -53,6 +53,7 @@ plugin/smt*
 plugin/addons
 public/
 test/
+led/
 
 # Typescript v1 declaration files
 typings/

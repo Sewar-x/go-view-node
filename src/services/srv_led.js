@@ -43,7 +43,11 @@ const project_list = async ({ page, limit }) => {
       order: [['id', 'ASC']],
       raw: true
     }
-    res.data = await Led_Projects.findAll(condition)
+    let tmp = await Led_Projects.findAndCountAll(condition)
+    if (tmp) {
+      res.count = tmp.count
+      res.data = tmp.rows
+    }
   } catch (error) {}
   return res
 }
