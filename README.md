@@ -1,6 +1,8 @@
-## 本项目是一个用nodejs实现的 go-view的后端，方便大家使用
+## 项目介绍：
+本项目是一个用nodejs实现的 go-view的后端，方便大家使用
+go-view[代码仓库](https://gitee.com/dromara/go-view)
 
-### 主要技术栈为：
+### 主要技术栈：
 | 名称                | 版本    |
 | ------------------- | ------ |
 | express             | 4.18.2 |
@@ -40,7 +42,7 @@ npm start
 ### 数据库脚本参考db/mysql.sql
 
 ### 配置信息在config文件中
-```
+```json
 数据库连接配置：
 
 sequelizeConfig: {
