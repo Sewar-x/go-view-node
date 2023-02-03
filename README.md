@@ -1,5 +1,5 @@
 ## 项目介绍：
-本项目是一个用nodejs实现的 go-view的后端，方便大家使用
+本项目是一个用nodejs实现的 go-view的后端，方便大家使用<br />
 go-view[代码仓库](https://gitee.com/dromara/go-view)
 
 ### 主要技术栈：
@@ -39,7 +39,7 @@ npm start
 └── tmp             文件上传临时目录
     └── upload/tmp
 ```
-### 数据库脚本参考db/mysql.sql
+### 数据库脚本参考[db/mysql.sql](db/mysql.sql)
 
 ### 配置信息在config文件中
 ```json
