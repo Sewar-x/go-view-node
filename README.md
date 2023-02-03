@@ -42,7 +42,7 @@ npm start
 ### 数据库脚本参考[db/mysql.sql](db/mysql.sql)
 
 ### 配置信息在config文件中
-```json
+```javascript
 数据库连接配置：
 
 sequelizeConfig: {
