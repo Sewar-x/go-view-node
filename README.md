@@ -41,10 +41,9 @@ npm start
 ```
 ### 数据库脚本参考[db/mysql.sql](db/mysql.sql)
 
-### 配置信息在config文件中
-```javascript
+### 配置信息在[config](src/config/index.js)文件中定义
 数据库连接配置：
-
+```javascript
 sequelizeConfig: {
     username: 'root',
     password: 'mes',
