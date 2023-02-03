@@ -1,6 +1,8 @@
+[TOC]
+
 ## 项目介绍：
 本项目是一个用nodejs实现的 go-view的后端，方便大家使用<br />
-go-view[代码仓库](https://gitee.com/dromara/go-view)
+>go-view [代码仓库](https://gitee.com/dromara/go-view)
 
 ### 主要技术栈：
 | 名称                | 版本    |
@@ -12,11 +14,11 @@ go-view[代码仓库](https://gitee.com/dromara/go-view)
 
 ### 使用方式
 #### 安装
-```
+```shell
 npm install
 ```
 #### 启动
-```
+```shell
 npm start
 ```
 
