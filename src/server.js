@@ -1,6 +1,7 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
+require('./models')
 
 const app = express()
 const PORT = process.env.PORT || 4444
@@ -17,14 +18,13 @@ app.use(bodyParser.json())
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }))
 
-require('./src/models')
-
 // simple route
 app.get('/', (req, res) => {
   res.json({ message: 'Welcome to led application.' })
 })
 
-require('./src/routers')(app)
+const routes = require('./routers')
+app.use(routes)
 
 // set port, listen for requests
 app.listen(PORT, () => {

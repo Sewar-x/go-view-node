@@ -6,13 +6,14 @@ const APP_ROOT = process.cwd()
 
 module.exports = {
   APP_ROOT,
-  UPLOAD_PATH_LED:  join(APP_ROOT, 'tmp/upload/led/'),
+  UPLOAD_PATH_LED: join(APP_ROOT, 'tmp/upload/led/'),
   APP_SECRET: 'led',
+  DEBUG: true,
   sessionExpiresIn: '7d',
   sequelizeConfig: {
     username: 'root',
     password: 'mes',
-    database: 'smt',
+    database: 'led',
     connect: {
       host: '127.0.0.1',
       port: 3306,

@@ -1,7 +1,6 @@
 'use strict'
 
-const { sequelize, db } = require('../models')
-const { Led_Projects, Led_Projectdatas } = db
+const { sequelize, Led_Projects, Led_Projectdatas } = db
 
 // Led_Projects, Led_Projectdatas  对应的model要求字段首字母小写，为了适配go-view前台，所以只能在model层进行字段的处理
 

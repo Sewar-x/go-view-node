@@ -1,32 +1,45 @@
 'use strict'
 
 const fs = require('fs')
-const path = require('path')
-const { Sequelize, DataTypes } = require('sequelize')
 
-const { sequelizeConfig } = require('../config')
+const { sequelizeConfig, DEBUG } = require('../config')
 
-const sequelize = new Sequelize(sequelizeConfig.database, sequelizeConfig.username, sequelizeConfig.password, sequelizeConfig.connect, {
-  logging: console.log,
-  isolationLevel: Sequelize.Transaction.ISOLATION_LEVELS.SERIALIZABLE
-})
+const logging = DEBUG ? console : false
+// const logging = DEBUG ? logger.debug : false
 
-let db = {}
-const dbType = sequelize.options.dialect
-const dbName = sequelize.config.database || sequelizeConfig.database
+const dbUtil = require('../utils/db_utils/db')(sequelizeConfig, logging, DEBUG)
+let all_model_list = [__dirname + '/self', __dirname + '/pf']
 
-db.Led_Projects = require('./self/Led_Projects.js')(sequelize, DataTypes)
-db.Led_Projectdatas = require('./self/Led_Projectdatas.js')(sequelize, DataTypes)
-db.pf_user = require('./self/pf_user.js')(sequelize, DataTypes)
+// 加载model文件
+dbUtil.loadModelList(all_model_list)
 
+dbUtil.modelAssociate()
+
+let { sequelize, dbType, dbName, knex, knex_kit, models, tabs } = dbUtil
+
+let dbHelper = require('../utils/db_utils/dbHelper')(sequelize)
 // 同步表结构
-sequelize.sync()
+dbUtil.sync()
+
+dbUtil.dbHelper = dbHelper
+
+// plg_common 和 smt_xx 都用db作为数据加载的依据
+
+let db = {
+  sequelize,
+  dbType,
+  dbName,
+  ...models,
+  tabs,
+  dbHelper,
+  knex,
+  knex_kit
+}
 
 global.db = db
 
 module.exports = {
   sequelize,
   dbType,
-  dbName,
-  db
+  dbName
 }
