@@ -47,13 +47,8 @@ build/Release
 node_modules/
 jspm_packages/
 dist/
-dev_bug/
-dev_dist/
-plugin/smt*
-plugin/addons
 public/
 test/
-led/
 
 # Typescript v1 declaration files
 typings/
