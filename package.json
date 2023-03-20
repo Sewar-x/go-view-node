@@ -4,7 +4,8 @@
   "description": "",
   "main": ".prettierrc.js",
   "scripts": {
-    "start": "nodemon ./src/server.js",
+    "dev": "nodemon ./src/server.js",
+    "start": "node ./src/server.js",
     "prod": "node ./server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

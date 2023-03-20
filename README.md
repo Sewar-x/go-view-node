@@ -3,6 +3,7 @@
 ## 项目介绍：
 本项目是一个用nodejs实现的 go-view的后端，方便大家使用<br />
 **除此之外，nodejs的后端还提供了，api功能，只要在数据库中配置sql，就能满足日常配置大屏和报表的需求。**
+联系方式：qq：285861181
 >go-view [代码仓库](https://gitee.com/dromara/go-view)
 
 ### 主要技术栈：
@@ -84,17 +85,18 @@ sequelizeConfig: {
 
 ### 业务API配置，在数据库表api中定义
 **以下sql中@line@，为api调用时需要传递的参数，在后端程序会自动根据@line@替换成对应的值。**
-报表配置-不分页：
+- 报表配置-不分页：
 ```sql
 SELECT * FROM	bm_ipinfo WHERE	plineno = '@line@' AND station='@station@';
 ```
 
-报表配置-分页：
+- 报表配置-分页：
 ```sql
 SELECT COUNT(*) AS total FROM bm_ipinfo WHERE plineno = '@line@' AND station='@station@';
 SELECT * FROM bm_ipinfo WHERE plineno = '@line@' AND station='@station@' LIMIT @offset@,@rows@;
 ```
-支持跨数据库的配置方式，从而满足一套配置，切换不同数据库的需求：
+
+- 支持跨数据库的配置方式，从而满足一套配置，切换不同数据库的需求：
 具体语法参考：[knex](https://www.knexjs.cn/)
 ```javascript
 knex('pms_plan')
@@ -110,9 +112,10 @@ knex('pms_plan')
 ```
 
 ### 业务API测试（vscode，推荐使用Thunder Client工具）
-调用的url和参数：
+- 调用的url和参数：
 所有api的url的访问都是通过 http:127.0.0.1:4444/api/getDataByApiId进行，通过参数中的apiId进行识别。以下演示了post的参数，get访问也可以只是测试时参数传递不同而已
-分页的参数传递
+
+- 分页的参数传递
 ```javascript
 {
   "restype":"datagrid",
@@ -123,7 +126,8 @@ knex('pms_plan')
   "rows":10
 }
 ```
-不分页的参数传递
+
+- 不分页的参数传递
 ```javascript
 {
   "apiId": "021ea7a0-d878-11ea-a6ca-35634091a02b",
@@ -132,7 +136,7 @@ knex('pms_plan')
 }
 ```
 
-参数解释：
+- 参数解释：
 ```javascript
 "restype":"前端需要的数据格式，不同的前端所要求的返回格式不同（一般情况：不分页-不需要此字段；分页-datagrid即可）",
 "apiId":"数据库api表中id字段，用于标识调用哪个脚本进行返回",
@@ -140,6 +144,30 @@ knex('pms_plan')
 "page":"第几页",
 "rows":"页大小"
 ```
+- api数据库表中的配置
+  ![api表](doc/api表配置.png)
+- api测试情况
+  ![分页](doc/api分页测试.png)
+  ![不分页](doc/api不分页测试.png)
+
+### sequelize多数据库适配
+- 安装对应的package，本项目中只适配了mysql；其他数据库参考下面内容进行适配
+- 需要再配置文件[config](src/config/index.js)中增加对应的数据库连接串
+- 不同数据库的连接串
+```shell
+npm install --save pg pg-hstore # Postgres
+npm install --save mysql2
+npm install --save mariadb
+npm install --save sqlite3
+npm install --save tedious # Microsoft SQL Server
+npm install --save oracledb # Oracle Database
+```
+- sequelize详细配置文档见：[地址](https://sequelize.org/docs/v6/getting-started/)
 
 ### 集成过程中的注意事项
-具体内容见：[地址](https://www.cnblogs.com/egreen/p/17075035.html)
+- 具体内容见：[地址](https://www.cnblogs.com/egreen/p/17075035.html)
+
+### TODOLIST
+- 增加web页面用于管理和维护api表的配置
+- 增加用户授权机制
+- 完善和优化其他功能
