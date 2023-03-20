@@ -2,7 +2,8 @@
   "name": "led",
   "version": "1.0.0",
   "description": "",
-  "main": ".prettierrc.js",
+  "main": "./src/server.js",
+  "author": "QQ：285861181",
   "scripts": {
     "dev": "nodemon ./src/server.js",
     "start": "node ./src/server.js",
@@ -10,7 +11,6 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
   "license": "ISC",
   "dependencies": {
     "@zhengxs/js.tree": "^0.5.0",

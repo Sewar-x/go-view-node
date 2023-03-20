@@ -4,7 +4,7 @@ const path = require('path')
 const { Sequelize, DataTypes } = require('sequelize')
 const Knex = require('knex')
 // 用于管理数据库 查询数据库，查询表结构，主外键等信息
-const { SchemaInspector } = require('../knex-schema-inspector')
+// const { SchemaInspector } = require('../knex-schema-inspector')
 // 用于处理分页
 const { attachPaginate } = require('knex-paginate')
 
@@ -35,7 +35,7 @@ class DB {
     this.dbName = this.sequelize.config.database || db_cfg.database
     this.knex = null
     this.init(db_cfg, debug)
-    this.knex_kit = SchemaInspector(this.knex)
+    // this.knex_kit = SchemaInspector(this.knex)
   }
 
   init(db_cfg, _debug) {

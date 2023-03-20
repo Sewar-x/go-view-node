@@ -15,7 +15,7 @@ dbUtil.loadModelList(all_model_list)
 
 dbUtil.modelAssociate()
 
-let { sequelize, dbType, dbName, knex, knex_kit, models, tabs } = dbUtil
+let { sequelize, dbType, dbName, knex, models, tabs } = dbUtil
 
 let dbHelper = require('../utils/db_utils/dbHelper')(sequelize)
 // 同步表结构
@@ -32,8 +32,7 @@ let db = {
   ...models,
   tabs,
   dbHelper,
-  knex,
-  knex_kit
+  knex
 }
 
 global.db = db
