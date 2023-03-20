@@ -76,4 +76,34 @@ BEGIN;
 INSERT INTO `pf_user` (`id`, `username`, `nick`, `password`, `salt`, `birthday`, `gender`, `email`, `phone`, `state`, `description`, `login_count`, `previous_visit`, `last_visit`, `del_flag`, `last_visit_ip`, `depart_no`, `avatar_url`, `source`, `inviteman`, `company_id`, `created_at`, `created_by`, `updated_at`, `updated_by`) VALUES (1, 'admin', '管理员', '$2a$10$qZA9J6wMpUw2s9BHl0sv9eHHTe2rw2lv5kQ2uq.eJbVR1OKFKEfy.', '$2a$10$qZA9J6wMpUw2s9BHl0sv9e', '', '1', '285861181@qq.com', '15571981868', NULL, '', NULL, NULL, NULL, 0, '', NULL, NULL, NULL, NULL, 'dc3c7050-5486-11ea-b47c-6d1213299572', '2017-10-04 19:22:05', NULL, '2020-01-03 17:26:44', NULL);
 COMMIT;
 
+
+-- ----------------------------
+-- Table structure for api
+-- ----------------------------
+DROP TABLE IF EXISTS `api`;
+CREATE TABLE `api` (
+  `id` varchar(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `realm` varchar(12) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '领域',
+  `name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `script` varchar(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'mysql-配合spc进行配置',
+  `use` int DEFAULT '0' COMMENT '0未启用，1启用',
+  `script_type` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '0普通sql，1无返回值存储过程，2带返回值存储过程，3执行存储过程返回多个SELECT，9执行knex脚本',
+  `exec_type` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'data:数据，exec：执行insert、update、delete',
+  `exec_count` bigint DEFAULT '0' COMMENT '执行次数',
+  `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `updated_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` datetime NOT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `updated_at` datetime NOT NULL ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
+
+-- ----------------------------
+-- Records of api
+-- ----------------------------
+BEGIN;
+INSERT INTO `api` (`id`, `realm`, `name`, `description`, `script`, `use`, `script_type`, `exec_type`, `exec_count`, `remark`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES ('021ea7a0-d878-11ea-a6ca-35634091a02b', NULL, NULL, '查询', 'SELECT\n	* \nFROM\n	bm_ipinfo \nWHERE\n	plineno = \'@line@\' LIMIT 3', 1, '0', NULL, 25, NULL, NULL, NULL, '2023-03-19 16:24:16', '2023-03-19 16:24:16');
+COMMIT;
+
 SET FOREIGN_KEY_CHECKS = 1;
