@@ -43,7 +43,9 @@ npm start
 └── tmp             文件上传临时目录
     └── upload/tmp
 ```
-### 数据库脚本参考[db/mysql.sql](db/mysql.sql)
+### 数据库脚本参考
+- mysql [db/mysql.sql](db/mysql.sql)
+- sqlserver [db/sqlserver.sql](db/sqlserver.sql)
 
 ### 配置信息在[config](src/config/index.js)文件中定义
 数据库连接配置：
@@ -84,7 +86,7 @@ sequelizeConfig: {
 ```
 
 ### 业务API配置，在数据库表api中定义
-**以下sql中@line@，为api调用时需要传递的参数，在后端程序会自动根据@line@替换成对应的值。**
+**以下sql为mysql脚本，sql中@line@，为api调用时需要传递的参数，在后端程序会自动根据@line@替换成对应的值。**
 - 报表配置-不分页：
 ```sql
 SELECT * FROM	bm_ipinfo WHERE	plineno = '@line@' AND station='@station@';
@@ -151,7 +153,7 @@ knex('pms_plan')
   ![不分页](doc/api不分页测试.png)
 
 ### sequelize多数据库适配
-- 安装对应的package，本项目中只适配了mysql；其他数据库参考下面内容进行适配
+- 安装对应的package，本项目中只适配了mysql、sqlserver；其他数据库参考下面内容进行适配
 - 需要再配置文件[config](src/config/index.js)中增加对应的数据库连接串
 - 不同数据库的连接串
 ```shell

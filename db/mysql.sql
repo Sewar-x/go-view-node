@@ -103,7 +103,8 @@ CREATE TABLE `api` (
 -- Records of api
 -- ----------------------------
 BEGIN;
-INSERT INTO `api` (`id`, `realm`, `name`, `description`, `script`, `use`, `script_type`, `exec_type`, `exec_count`, `remark`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES ('021ea7a0-d878-11ea-a6ca-35634091a02b', NULL, NULL, '查询', 'SELECT\n	* \nFROM\n	bm_ipinfo \nWHERE\n	plineno = \'@line@\' LIMIT 3', 1, '0', NULL, 25, NULL, NULL, NULL, '2023-03-19 16:24:16', '2023-03-19 16:24:16');
+INSERT INTO `api` (`id`, `realm`, `name`, `description`, `script`, `use`, `script_type`, `exec_type`, `exec_count`, `remark`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES ('021ea7a0-d878-11ea-a6ca-35634091a02b', NULL, NULL, '查询-分页', 'SELECT\r\n	COUNT(*) AS total \r\nFROM\r\n	bm_ipinfo \r\nWHERE\r\n	plineno = \'@line@\' \r\n	AND station=\'@station@\';\r\nSELECT\r\n	*\r\nFROM\r\n	bm_ipinfo \r\nWHERE\r\n	plineno = \'@line@\' \r\n	AND station=\'@station@\'\r\nLIMIT @offset@,@rows@;', 1, '0', NULL, 64, NULL, NULL, NULL, '2023-03-20 16:33:03', '2023-03-20 16:33:03');
+INSERT INTO `api` (`id`, `realm`, `name`, `description`, `script`, `use`, `script_type`, `exec_type`, `exec_count`, `remark`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES ('d318279e-c6c0-11ed-a3da-e86a64995474', NULL, NULL, '查询-不分页', 'SELECT\r\n	*\r\nFROM\r\n	bm_ipinfo \r\nWHERE\r\n	plineno = \'@line@\' \r\n	AND station=\'@station@\';', 1, '0', NULL, 59, NULL, NULL, NULL, '2023-03-20 11:13:36', '2023-03-20 11:13:36');
 COMMIT;
 
 SET FOREIGN_KEY_CHECKS = 1;

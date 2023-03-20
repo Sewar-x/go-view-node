@@ -5,9 +5,10 @@
   "main": "./src/server.js",
   "author": "QQ：285861181",
   "scripts": {
-    "dev": "nodemon ./src/server.js",
-    "start": "node ./src/server.js",
-    "prod": "node ./server.js",
+    "dev": "cross-env NODE_ENV=dev nodemon ./src/server.js",
+    "start": "cross-env NODE_ENV=dev node ./src/server.js",
+    "prod": "cross-env NODE_ENV=prod node ./src/server.js",
+    "sqlserver": "cross-env NODE_ENV=test node ./src/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -27,6 +28,7 @@
     "multer": "1.4.5-lts.1",
     "multiparty": "^4.2.3",
     "mysql2": "^3.1.0",
-    "sequelize": "^6.28.0"
+    "sequelize": "^6.28.0",
+    "tedious": "^15.1.3"
   }
 }
