@@ -28,5 +28,9 @@ app.use(routes)
 
 // set port, listen for requests
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}.`)
+  console.log(`
+      ################################################
+      🛡️  Server listening on port: ${PORT} 🛡️
+      ################################################
+    `)
 })

@@ -2,6 +2,7 @@
 
 const path = require('path')
 const utils = require('./utils')
+const _package = require('../../../package.json')
 
 const APP_ROOT = process.cwd()
 
@@ -20,6 +21,7 @@ let config = {
   APP_PORT: 4444,
   APP_SECRET: Buffer.from(APP_NAME, 'base64'),
   DEBUG: true,
+  VERSION: _package.version,
   LOG_DIR: path.join(APP_ROOT, 'logs'),
   UPLOAD_PATH_LED: path.join(APP_ROOT, 'tmp/upload/led/'),
   expiresIn: '240h',

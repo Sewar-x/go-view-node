@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const { VERSION } = require('../config')
 const { date_fmt } = require('../utils/datetime_kit');
 
 router.get('/debug', function (req, res, next) {
@@ -10,6 +11,7 @@ router.get('/debug', function (req, res, next) {
 
 <body>
     <p>Welcome, to the LedWebApi.</p>
+    <p>Version:${VERSION}</p>
     <p>Now: ${date_fmt()}</p>
     <script type="text/javascript">
       // ==================http================================================
@@ -70,7 +72,7 @@ router.get('/debug', function (req, res, next) {
       //});
     </script>
 </body>
-</html>`);
+</html>`)
 });
 
 module.exports = router;

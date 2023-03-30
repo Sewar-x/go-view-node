@@ -20,8 +20,26 @@
 npm install
 ```
 #### 启动
+- 默认：
 ```shell
 npm start
+```
+- 开发环境：
+```shell
+npm run dev
+需要安装：npm i -g nodemon cross-env
+```
+- 生产环境：
+```shell
+npm run prod
+```
+- 生产环境-pm2：
+```shell
+npm run pm2
+```
+- 开发环境使用-sqlserver：
+```shell
+npm run sqlserver
 ```
 
 ### 项目结构
