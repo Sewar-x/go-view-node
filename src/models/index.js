@@ -37,7 +37,7 @@ let db = {
 
 global.db = db
 
-module.exports = {
+module.exports = app => {
   sequelize,
   dbType,
   dbName

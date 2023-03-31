@@ -1,36 +1,23 @@
+
 const express = require('express')
-const bodyParser = require('body-parser')
-const cors = require('cors')
-require('./models')
-
 const app = express()
-const PORT = process.env.PORT || 9991
-
-var corsOptions = {
-  origin: `http://localhost:${PORT}`
-}
-
-app.use(cors(corsOptions))
-
-// parse requests of content-type - application/json
-app.use(bodyParser.json())
-
-// parse requests of content-type - application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: true }))
-
-// simple route
-app.get('/', (req, res) => {
-  res.json({ message: 'Welcome to led application.' })
-})
-
+const models = require('./models')
 const routes = require('./routers')
-app.use(routes)
+const middleware = require('./middleware')
+models(app)
+middleware(app)
+routes(app)
 
+
+const { PORT } = require('./config')
+app.get('/', (req, res) => {
+  res.json({ message: 'Welcome to low-code-node application.' })
+})
 // set port, listen for requests
 app.listen(PORT, () => {
   console.log(`
-      ################################################
-      🛡️  Server listening on port: ${PORT} 🛡️
-      ################################################
+      ==========================================
+        🛡️  Server listening on port: ${PORT} 🛡️
+      ==========================================
     `)
 })
