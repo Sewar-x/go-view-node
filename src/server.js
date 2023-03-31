@@ -4,7 +4,7 @@ const cors = require('cors')
 require('./models')
 
 const app = express()
-const PORT = process.env.PORT || 4444
+const PORT = process.env.PORT || 9991
 
 var corsOptions = {
   origin: `http://localhost:${PORT}`

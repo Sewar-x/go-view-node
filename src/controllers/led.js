@@ -1,6 +1,6 @@
 'use strict'
 
-const { sessionExpiresIn, APP_SECRET, UPLOAD_PATH_LED } = require('../config')
+const { sessionExpiresIn, APP_SECRET, UPLOAD_PATH } = require('../config')
 const fs = require('fs')
 const path = require('path')
 const multiparty = require('multiparty')
@@ -35,7 +35,7 @@ const login = async (req, res, next) => {
     let { username, password } = req.body
     let user = await pf_user.findOne({ where: { username: username }, raw: true })
     if (!user) {
-      res_data.code = 200
+      res_data.code = 200 
       res_data.msg = `未找到对应的用户${username}，请核查！`
       return res.json(res_data)
     }
@@ -230,7 +230,7 @@ const project_data_save = async (req, res, next) => {
 const project_upload = async (req, res, next) => {
   let _m = req.method
   let res_data = { code: 0, msg: '', data: {} }
-  let uploadDir = UPLOAD_PATH_LED
+  let uploadDir = UPLOAD_PATH
   if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir)
   }
@@ -307,7 +307,7 @@ const project_get_images = async (req, res, next) => {
     return res.json(res_data)
   }
   try {
-    let uploadDir = UPLOAD_PATH_LED
+    let uploadDir = UPLOAD_PATH
     if (!fs.existsSync(uploadDir)) {
       fs.mkdirSync(uploadDir)
     }
