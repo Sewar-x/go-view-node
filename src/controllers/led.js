@@ -30,12 +30,14 @@ const getOssInfo = async (req, res, next) => {
 }
 
 const login = async (req, res, next) => {
+  console.log('🚀 ~ file: led.js:86 ~ login ~ req:', req)
+
   let res_data = { code: 0, msg: '', data: {} }
   try {
     let { username, password } = req.body
     let user = await pf_user.findOne({ where: { username: username }, raw: true })
     if (!user) {
-      res_data.code = 200 
+      res_data.code = 200
       res_data.msg = `未找到对应的用户${username}，请核查！`
       return res.json(res_data)
     }
@@ -219,7 +221,7 @@ const project_data_save = async (req, res, next) => {
     res_data.code = 200
     res_data.data = data
   } catch (error) {
-    console.log('error: ', error);
+    console.log('error: ', error)
     res_data.code = 500
     res_data.msg = error
   }

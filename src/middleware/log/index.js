@@ -8,8 +8,6 @@ module.exports = opts => {
         ctx.status = 500
       }
       ctx.log.error(e.stack)
-      ctx.state.logged = true
-      ctx.throw(e)
     })
   }
 }

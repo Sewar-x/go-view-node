@@ -4,17 +4,18 @@
 
 const log4js = require('log4js')
 const access = require('./access') // 引入日志输出信息的封装文件
-const config = require('../../configure/index.js')
+const config = require('../../config/index.js')
 const methods = ['trace', 'debug', 'info', 'warn', 'error', 'fatal', 'mark'] //日志分级
 
 // 提取默认公用参数对象
-const baseInfo = config.log
+const baseInfo = config.LOG_CONFIG
 module.exports = (options = {}) => {
   let contextLogger = {}, //错误日志等级对象，最后会赋值给ctx上，用于打印各种日志
     appenders = {}, //日志配置
     opts = Object.assign({}, baseInfo, options), //系统配置
-    { logLevel, dir, ip, projectName } = opts,
-    commonInfo = { projectName, ip } //存储公用的日志信息
+    { logLevel, dir, projectName } = opts
+
+  commonInfo = { projectName } //存储公用的日志信息
 
   //指定要记录的日志分类
   appenders.all = {
@@ -25,11 +26,11 @@ module.exports = (options = {}) => {
   }
 
   // 环境变量为dev、development 认为是开发环境，如果为开发环境配置在控制台上打印信息
-  // if (config.env === "dev"  || config.env === "development") {
-  //     appenders.out = {
-  //         type: "console"
-  //     };
-  // }
+  if (process.env.NODE_ENV === 'development') {
+    appenders.out = {
+      type: 'console'
+    }
+  }
 
   let logConfig = {
     appenders,
