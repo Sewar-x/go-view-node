@@ -1,38 +1,31 @@
 'use strict'
-const fs = require('fs');
-const path = require('path');
+const fs = require('fs')
+const path = require('path')
 
-fs.readdir(path.join(__dirname, '../'), (err, files) => {
-  if (err) {
-    return false
-  }
-  files.forEach(file => {
-    let extname = path.extname(file)
-    if (extname === '.js') {
-      const filePath = path.join(path.join(__dirname, '../'), file)
-      modules.push(require(filePath))
-    }
-  })
+/**
+ * 同步获取 config 文件夹下所有文件配置
+ * @returns
+ */
+function getFilesFromFold() {
   let configure = {}
-  modules.forEach(m => {
-    configure = { ...configure, ...m }
-  })
-})
+  const modules = []
+  try {
+    const files = fs.readdirSync(path.join(__dirname, '../'))
+    files.forEach(file => {
+      let extname = path.extname(file)
+      if (extname === '.js') {
+        const filePath = path.join(path.join(__dirname, '../'), file)
+        modules.push(require(filePath))
+      }
+    })
 
-const app = require('../app.js')
-const database = require('../database.js')
-const system = require('../system.js')
-const log = require('../log.js')
-const token = require('../token.js')
-let config = {
-  ...app,
-  ...system,
-  ...log,
-  ...token,
-  //数据库配置
-  database: database.default.db,
-  // sequelize 配置
-  sequelizeConfig: database.default.sequelize
+    modules.forEach(m => {
+      configure = { ...configure, ...m }
+    })
+    return configure
+  } catch (error) {
+    return {}
+  }
 }
 
-module.exports = config
+module.exports = getFilesFromFold()
