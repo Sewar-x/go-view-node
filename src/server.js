@@ -1,18 +1,20 @@
-
 const express = require('express')
 const app = express()
 const models = require('./models')
 const routes = require('./routers')
 const middleware = require('./middleware')
-models(app)
-middleware(app)
-routes(app)
+const pathParse = require('./plugins/pathParse.js')
 
+function bootstrap() {
+  //将 Controllers 文件路径转为对象
+  pathParse(app)
+  models(app)
+  middleware(app)
+  routes(app)
+}
 
+bootstrap()
 const { PORT } = require('./config')
-app.get('/', (req, res) => {
-  res.json({ message: 'Welcome to low-code-node application.' })
-})
 // set port, listen for requests
 app.listen(PORT, () => {
   console.log(`

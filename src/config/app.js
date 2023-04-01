@@ -10,5 +10,4 @@ module.exports = {
   APP_NAME,
   APP_SECRET: Buffer.from(APP_NAME, 'base64'),
   VERSION: _package.version,
-  DEBUG: true
 }
