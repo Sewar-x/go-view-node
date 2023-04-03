@@ -1,3 +1,6 @@
+
+const tokenKit = require('../../utils/token_kit')
+
 const { pf_user } = db
 const login = async (req, res, next) => {
   try {
@@ -16,8 +19,7 @@ const login = async (req, res, next) => {
         msg: `用户 ${username} 登录密码密码不正确，请核查！`
       })
     }
-
-    let token = await token_kit.createToken(user)
+    let token = await tokenKit().createToken(user)
     let userinfo = {
       id: user.id,
       username: user.username,
@@ -65,5 +67,4 @@ const logout = async (req, res, next) => {
 module.exports = {
   login,
   logout,
-
 }

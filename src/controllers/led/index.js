@@ -1,6 +1,6 @@
 'use strict'
 
-const { sessionExpiresIn, APP_SECRET, UPLOAD_PATH } = require('../../config')
+const { UPLOAD_PATH } = require('../../config')
 const fs = require('fs')
 const path = require('path')
 const multiparty = require('multiparty')
@@ -8,7 +8,6 @@ const moment = require('moment')
 const { pf_user } = db
 const srv_led = require('../../services/srv_led')
 const File = require('../../utils/File')
-const token_kit = require('../../utils/token_kit')(sessionExpiresIn, APP_SECRET)
 
 const getOssInfo = async (req, res, next) => {
   let _m = req.method

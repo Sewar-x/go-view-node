@@ -1,7 +1,7 @@
 'use strict'
 
 const jwt = require('jsonwebtoken')
-
+const { sessionExpiresIn, APP_SECRET } = require('../config')
 class JwtToken {
   constructor(expiresIn, secret) {
     this.expiresIn = expiresIn
@@ -11,7 +11,7 @@ class JwtToken {
   async createToken(user) {
     if (user) {
       const { id, username } = user
-      return await jwt.sign({ id: id, username: username, role: 'BIZ' }, this.secret, { expiresIn: this.expiresIn })
+      return await jwt.sign({ id: id, username: username }, this.secret, { expiresIn: this.expiresIn })
     } else {
       return await jwt.sign({ role: 'GUEST' }, this.secret, { expiresIn: this.expiresIn })
     }
@@ -37,5 +37,5 @@ class JwtToken {
 }
 
 module.exports = (expiresIn, secret) => {
-  return new JwtToken(expiresIn, secret)
+  return new JwtToken(expiresIn || sessionExpiresIn, secret || APP_SECRET)
 }
