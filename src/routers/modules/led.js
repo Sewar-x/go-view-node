@@ -1,15 +1,10 @@
 'use strict'
 
-const { Router } = require('express')
-const router = Router()
-
 var multer = require('multer')
 var upload = multer()
 
-module.exports = app => {
+module.exports = (app, router) => {
   router.get('/goview/sys/getOssInfo', app.controllers.led.getOssInfo)
-  router.post('/goview/sys/login', app.controllers.login.login)
-  router.get('/goview/sys/Logout', app.controllers.login.logout)
   router.get('/goview/project/list', app.controllers.led.project_list)
   router.get('/goview/project/getData', app.controllers.led.project_by_id)
   router.post('/goview/project/create', app.controllers.led.project_create)

@@ -9,7 +9,7 @@ const { PERFIX } = require('../config')
 const registerRouters = (app, router) => {
   const routers = app.routers
   for (let routeKey in routers) {
-    router.use(PERFIX, routers[routeKey](app))
+    router.use(PERFIX, routers[routeKey](app,router))
   }
 }
 
