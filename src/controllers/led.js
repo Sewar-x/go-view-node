@@ -32,7 +32,7 @@ const getOssInfo = async (req, res, next) => {
 const login = async (req, res, next) => {
 
   try {
-    let { username, password } = req.body
+    let { username, password } = req.getParams()
     let user = await pf_user.findOne({ where: { username: username }, raw: true })
     if (!user) {
       return res.sendError({

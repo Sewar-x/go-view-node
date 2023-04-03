@@ -1,8 +1,9 @@
+const bodyParser = require('body-parser')
 const static = require('./static.js')
 const cors = require('./cors.js')
-const responseFormatter = require('./responseFormatter .js')
+const responseFormatter = require('./responseFormatter.js')
 const errorHandlers = require('./error.js')
-const bodyParser = require('body-parser')
+const paramsMiddleware = require('./requestParams.js')
 const { loggerMiddleware } = require('./logger.js')
 const { STATIC } = require('../config')
 
@@ -16,8 +17,9 @@ module.exports = app => {
   app.use(bodyParser.urlencoded({ extended: true }))
   // 静态资源中间件
   app.use(STATIC, static)
-  //Express 中间件是按顺序执行的。您应该在所有其他中间件之后，最后定义错误处理程序。否则，您的错误处理程序将不会被调用
+  app.use(paramsMiddleware)
   app.use(loggerMiddleware)
   app.use(responseFormatter)
+  //Express 中间件是按顺序执行的。您应该在所有其他中间件之后，最后定义错误处理程序。否则，您的错误处理程序将不会被调用
   app.use(errorHandlers)
 }
