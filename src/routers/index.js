@@ -1,5 +1,5 @@
 'use strict'
-const { PERFIX } = require('../config')
+const { PERFIX } = require('@config')
 
 /**
  * 自动注册所有路由

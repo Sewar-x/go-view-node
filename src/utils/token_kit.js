@@ -1,7 +1,7 @@
 'use strict'
 
 const jwt = require('jsonwebtoken')
-const { sessionExpiresIn, APP_SECRET } = require('../config')
+const { sessionExpiresIn, APP_SECRET } = require('@config')
 class JwtToken {
   constructor(expiresIn, secret) {
     this.expiresIn = expiresIn

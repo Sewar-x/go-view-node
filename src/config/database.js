@@ -40,7 +40,7 @@ module.exports = {
       timezone: '+08:00',
       define: {
         charset: DB.CHARSET,
-        freezeTableName: true, //sequelize就不会在表名后附加“s”字符
+        freezeTableName: true, //强制表名称等于模型名称,sequelize就不会在表名后附加“s”字符
         timestamps: true, //加属性created_at和updated_at
         createdAt: 'created_at',
         updatedAt: 'updated_at',

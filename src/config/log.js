@@ -3,7 +3,7 @@
  */
 const path = require('path')
 const app = require('./app.js')
-const _package = require('../../package.json')
+const _package = require('@package')
 module.exports = {
   LOG_CONFIG: {
     logLevel: 'debug', // 指定记录的日志级别

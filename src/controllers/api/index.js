@@ -1,9 +1,9 @@
 'use strict'
 
-const { getResData, getDefaultVal } = require('../../plugins/ApiRes')
-const srv_api = require('../../services/srv_api')
-const Obj = require('../../utils/Obj')
-const Res = require('../../utils/Res')
+const { getResData, getDefaultVal } = require('@plugins/ApiRes')
+const srv_api = require('@services/srv_api')
+const Obj = require('@utils/Obj')
+const Res = require('@utils/Res')
 const util = require('util')
 const { api } =db
 

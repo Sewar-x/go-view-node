@@ -3,10 +3,7 @@
 const fs = require('fs')
 
 const { sequelizeConfig, DEBUG } = require('../config')
-
 const logging = DEBUG ? console : false
-// const logging = DEBUG ? logger.debug : false
-
 const dbUtil = require('../utils/db_utils/db')(sequelizeConfig, logging, DEBUG)
 let all_model_list = [__dirname + '/self', __dirname + '/pf']
 
@@ -18,7 +15,7 @@ dbUtil.modelAssociate()
 let { sequelize, dbType, dbName, knex, models, tabs } = dbUtil
 
 let dbHelper = require('../utils/db_utils/dbHelper')(sequelize)
-// 同步表结构
+
 dbUtil.sync()
 
 dbUtil.dbHelper = dbHelper

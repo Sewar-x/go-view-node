@@ -152,7 +152,7 @@ class DB {
     }
   }
 
-  // 同步表结构
+  // 同步表结构,Sequelize 自动对数据库执行 SQL 查询.(请注意,这仅更改数据库中的表,而不更改 JavaScript 端的模型) 如果表不存在,则创建该表(如果已经存在,则不执行任何操作)
   async sync() {
     this.sequelize.sync({
       // force: true

@@ -5,7 +5,7 @@ const responseFormatter = require('./responseFormatter.js')
 const errorHandlers = require('./error.js')
 const paramsMiddleware = require('./requestParams.js')
 const { loggerMiddleware } = require('./logger.js')
-const { STATIC } = require('../config')
+const { STATIC } = require('@config/index.js')
 
 //notice: 中间件装入顺序很重要：首先装入的中间件函数也首先被执行。
 module.exports = app => {

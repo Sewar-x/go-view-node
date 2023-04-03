@@ -1,5 +1,5 @@
 const log4js = require('log4js')
-const { LOG_CONFIG } = require('../config/index.js')
+const { LOG_CONFIG } = require('@config/index.js')
 // 日志配置
 log4js.configure({
   //指定要记录的日志分类

@@ -1,8 +1,6 @@
 const dayjs = require('dayjs')
 
-// const dateFmt = 'YYYY-MM-DD';
 const dateFmt = 'YYYY-MM-DD HH:mm:ss'
-// const dateFmt = 'YY-MM-DD HH:mm:ss';
 
 const fmtRow = async data => {
   let row = data

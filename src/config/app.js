@@ -1,7 +1,7 @@
 /**
  * 应用设置
  */
-const _package = require('../../package.json')
+const _package = require('@package')
 const APP_NAME = _package.name
 const APP_ROOT = process.cwd()
 module.exports = {

@@ -1,13 +1,13 @@
 'use strict'
 
-const { UPLOAD_PATH } = require('../../config')
+const { UPLOAD_PATH } = require('@config')
 const fs = require('fs')
 const path = require('path')
 const multiparty = require('multiparty')
 const moment = require('moment')
 const { pf_user } = db
-const srv_led = require('../../services/srv_led')
-const File = require('../../utils/File')
+const srv_led = require('@services/srv_led')
+const File = require('@utils/File')
 
 const getOssInfo = async (req, res, next) => {
   let _m = req.method

@@ -1,5 +1,5 @@
 
-const tokenKit = require('../../utils/token_kit')
+const tokenKit = require('@utils/token_kit')
 
 const { pf_user } = db
 const login = async (req, res, next) => {
