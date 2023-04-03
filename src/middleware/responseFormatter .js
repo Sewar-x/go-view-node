@@ -1,17 +1,20 @@
 /**
  * 封装请求响应方法
  */
-
+const { log } = require('./logger')
 module.exports = () => {
   const responseFormatter = (req, res, next) => {
     // 在 res 对象中定义一个 sendResponse 方法
     res.sendResponse = ({ code, msg, data }) => {
+      const status = code || 200
       const response = {
-        code: code || 200,
+        code: status,
         msg: msg,
         data: data
       }
-      res.status(code).json(response)
+      // 记录错误日志
+      log && log('info', Object.assign({}, response, res.logInfo))
+      res.status(status).json(response)
     }
     next()
   }
@@ -19,12 +22,15 @@ module.exports = () => {
   const responseErrorFormatter = (req, res, next) => {
     // 在 res 对象中定义一个 sendResponse 方法
     res.sendError = ({ code, msg, data }) => {
+      const status = code || 500
       const response = {
-        code: code || 500,
+        code: status,
         msg: msg,
         data: data
       }
-      res.status(404).json(response)
+      // 记录错误日志
+      log && log('error', new Error(Object.assign({}, response, res.logInfo)))
+      res.status(status).json(response)
     }
     next()
   }
