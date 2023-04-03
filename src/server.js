@@ -4,22 +4,22 @@ const models = require('./models')
 const routes = require('./routers')
 const middleware = require('./middleware')
 const pathParse = require('./plugins/pathParse.js')
-
+const ip = require('ip')
 function bootstrap() {
   //将 Controllers 文件路径转为对象
   pathParse(app)
   models(app)
   middleware(app)
-  routes(app)
+  routes(app)//注意：路由必须首先注册
 }
 
 bootstrap()
 const { PORT } = require('./config')
 // set port, listen for requests
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`
-      ==========================================
-        🛡️  Server listening on port: ${PORT} 🛡️
-      ==========================================
+      ===================================================================
+        🛡️  Server listening on: http://${ip.address()}:${PORT} 🛡️
+      ===================================================================
     `)
 })

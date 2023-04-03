@@ -30,7 +30,6 @@ const getOssInfo = async (req, res, next) => {
 }
 
 const login = async (req, res, next) => {
-  console.log('🚀 ~ file: led.js:86 ~ login ~ req:', req)
 
   let res_data = { code: 0, msg: '', data: {} }
   try {
@@ -41,13 +40,13 @@ const login = async (req, res, next) => {
       res_data.msg = `未找到对应的用户${username}，请核查！`
       return res.json(res_data)
     }
-    // //密码验证
-    // let ok = await pf_user.validatePassword(password)
-    // if (!ok) {
-    //   res_data.code = 200
-    //   res_data.msg = `用户${username}登录密码密码不正确，请核查！`
-    //   return res.json(res_data)
-    // }
+    //密码验证
+    let ok = await pf_user.validatePassword(password)
+    if (!ok) {
+      res_data.code = 200
+      res_data.msg = `用户${username}登录密码密码不正确，请核查！`
+      return res.json(res_data)
+    }
 
     let token = await token_kit.createToken(user)
     let userinfo = {

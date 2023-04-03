@@ -9,8 +9,8 @@ module.exports = app => {
   router.use(PERFIX, ledRoute(app))
   router.use(PERFIX, apiRoute(app))
   router.use('/', publicRoute)
-  app.use(router)
   app.get('/', (req, res) => {
     res.json({ message: 'Welcome to low-code-node application.' })
   })
+  app.use(router)
 }
