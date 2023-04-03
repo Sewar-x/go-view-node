@@ -18,6 +18,6 @@ module.exports = app => {
   app.use(STATIC, static)
   //Express 中间件是按顺序执行的。您应该在所有其他中间件之后，最后定义错误处理程序。否则，您的错误处理程序将不会被调用
   app.use(loggerMiddleware)
-  app.use(responseFormatter())
+  app.use(responseFormatter)
   app.use(errorHandlers)
 }

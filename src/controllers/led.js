@@ -31,21 +31,21 @@ const getOssInfo = async (req, res, next) => {
 
 const login = async (req, res, next) => {
 
-  let res_data = { code: 0, msg: '', data: {} }
   try {
     let { username, password } = req.body
     let user = await pf_user.findOne({ where: { username: username }, raw: true })
     if (!user) {
-      res_data.code = 200
-      res_data.msg = `未找到对应的用户${username}，请核查！`
-      return res.json(res_data)
+      return res.sendError({
+        msg: `未找到对应的用户 ${username}，请核查！`
+      })
     }
     //密码验证
     let ok = await pf_user.validatePassword(password)
     if (!ok) {
-      res_data.code = 200
-      res_data.msg = `用户${username}登录密码密码不正确，请核查！`
-      return res.json(res_data)
+      return res.sendError({
+        code: 200,
+        msg: `用户 ${username} 登录密码密码不正确，请核查！`
+      })
     }
 
     let token = await token_kit.createToken(user)
@@ -75,14 +75,18 @@ const login = async (req, res, next) => {
       tag: null
     }
     let userData = { token: _token, userinfo: userinfo }
-    res_data.data = userData
-    res_data.msg = '操作成功'
-    res_data.code = 200
+
+    res.sendResponse({
+      msg: '操作成功',
+      data: userData
+    })
   } catch (error) {
-    res_data.code = 500
-    res_data.msg = error
+    res.sendError({
+      code: 500,
+      msg: error,
+      data: error
+    })
   }
-  return res.json(res_data)
 }
 
 const logout = async (req, res, next) => {
