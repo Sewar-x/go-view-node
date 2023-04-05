@@ -3,110 +3,24 @@ const fs = require('fs')
 const path = require('path')
 const { Sequelize, DataTypes } = require('sequelize')
 const Knex = require('knex')
-// 用于管理数据库 查询数据库，查询表结构，主外键等信息
-// const { SchemaInspector } = require('../knex-schema-inspector')
 // 用于处理分页
 const { attachPaginate } = require('knex-paginate')
 
-// const cls = require('continuation-local-storage')
-// // https://itbilu.com/nodejs/npm/EJO6CcCM-.html#usage-manage
-// const namespace = cls.createNamespace('zl_green')
-// Sequelize.cls = namespace
-
 class DB {
-  constructor(db_cfg, logger, debug = true) {
+  //构造函数
+  constructor({ database, sequelizeConfig, knexConfig, logging, DEBUG = true }) {
     //创建一个sequelize实例
-    this.sequelize = new Sequelize(db_cfg.database, db_cfg.username, db_cfg.password, db_cfg.connect, {
-      // https://stackoverflow.com/questions/21427501/how-can-i-see-the-sql-generated-by-sequelize-js
-      logging: logger.info,
+    this.sequelize = new Sequelize(sequelizeConfig.database, sequelizeConfig.username, sequelizeConfig.password, sequelizeConfig.connect, {
+      // 控制台输出查询日志
+      logging: logging.info,
       isolationLevel: Sequelize.Transaction.ISOLATION_LEVELS.SERIALIZABLE
-      // Sequelize.Transaction.ISOLATION_LEVELS.READ_UNCOMMITTED // "READ UNCOMMITTED"
-      // Sequelize.Transaction.ISOLATION_LEVELS.READ_COMMITTED // "READ COMMITTED"
-      // Sequelize.Transaction.ISOLATION_LEVELS.REPEATABLE_READ  // "REPEATABLE READ"
-      // Sequelize.Transaction.ISOLATION_LEVELS.SERIALIZABLE // "SERIALIZABLE"
-      // logging: log => {
-      //   console.log('dbLog: ', log)
-      //   return false
-      // } // 执行过程会打印一些sql的log，设为false就不会显示
     })
     this.tabs = []
     this.models = {}
-    this.dbType = this.sequelize.options.dialect
-    this.dbName = this.sequelize.config.database || db_cfg.database
-    this.knex = null
-    this.init(db_cfg, debug)
-    // this.knex_kit = SchemaInspector(this.knex)
-  }
-
-  init(db_cfg, _debug) {
-    let dialect = this.dbType
-    let knex_options = {
-      client: '',
-      connection: { timezone: '+08:00', useNullAsDefault: true },
-      debug: _debug,
-      log: {
-        debug(msg) {
-          //
-          if (msg) {
-            let { sql, bindings } = msg
-            if (!sql) return
-            if (bindings) {
-              if (bindings.length == 0) logger.info(`【knex ${dialect}】` + sql)
-              else logger.info(`【knex ${dialect}】` + sql, `[ ${bindings.join(', ')} ]`)
-            } else {
-              logger.info(`【knex ${dialect}】` + sql)
-            }
-          }
-        }
-      }
-    }
-
-    switch (dialect) {
-      case 'mysql':
-        knex_options.client = 'mysql2'
-        knex_options.connection = {
-          host: db_cfg.connect.host,
-          port: db_cfg.connect.port,
-          user: db_cfg.username,
-          password: db_cfg.password,
-          database: db_cfg.database,
-          timezone: db_cfg.connect.timezone,
-          // 方法一
-          dateStrings: true
-          // 方法二
-          // typeCast: function (field, next) {
-          //   if (field.type == 'DATETIME') {
-          //     return moment(field.string()).format('YYYY-MM-DD HH:mm:ss')
-          //   }
-          //   return next()
-          // }
-          // charset: db_cfg.connect.charset
-        }
-        break
-
-      case 'mssql':
-        knex_options.client = dialect
-        knex_options.connection = {
-          // 此处是server 不是host
-          server: db_cfg.connect.host,
-          port: db_cfg.connect.port,
-          user: db_cfg.username,
-          password: db_cfg.password,
-          database: db_cfg.database
-          // charset: db_cfg.connect.charset
-        }
-        break
-
-      case 'sqlite':
-        knex_options.client = 'sqlite3'
-        knex_options.connection = { filename: db_cfg.connect.storage }
-        break
-      default:
-        break
-    }
-    let knex = Knex(knex_options)
+    this.dbType = database.DATABASE
+    this.dbName = database.DB_NAME
+    this.knex = Knex(knexConfig)
     attachPaginate()
-    this.knex = knex
   }
 
   async loadModel(_path) {
@@ -114,7 +28,7 @@ class DB {
       .filter(file => {
         //过滤掉index.js，因为index.js就是这份代码
         let fix = file.substring(file.lastIndexOf('.'), file.length) //后缀名
-        // logger.info(file, fix);
+        // logging.info(file, fix);
         return file.indexOf('.') !== 0 && file !== 'index.js' && fix == '.js'
       })
       .forEach(file => {
@@ -152,15 +66,16 @@ class DB {
     }
   }
 
-  // 同步表结构,Sequelize 自动对数据库执行 SQL 查询.(请注意,这仅更改数据库中的表,而不更改 JavaScript 端的模型) 如果表不存在,则创建该表(如果已经存在,则不执行任何操作)
+  // 一次同步所有模型,同步表结构,Sequelize 自动对数据库执行 SQL 查询.(请注意,这仅更改数据库中的表,而不更改 JavaScript 端的模型) 如果表不存在,则创建该表(如果已经存在,则不执行任何操作)
   async sync() {
     this.sequelize.sync({
-      // force: true
+      // force: true //将创建表,如果表已经存在,则将其首先删除
+      // alter: true // - 这将检查数据库中表的当前状态(它具有哪些列,它们的数据类型等),然后在表中进行必要的更改以使其与模型匹配.
     })
   }
 }
 
-module.exports = (db_cfg, logger = false) => {
-  let _db = new DB(db_cfg, logger)
+module.exports = (sequelizeConfig, logging = false) => {
+  let _db = new DB(sequelizeConfig, logging)
   return _db
 }

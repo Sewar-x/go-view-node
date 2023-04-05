@@ -2,7 +2,7 @@
 
 // 由于在knex查询时会用到
 const moment = require('moment')
-const { DEBUG } = require('../config')
+const { DEBUG } = require('@config')
 const { dbHelper, dbType, knex, sequelize, api } = db
 
 // 根据 apiid获取相应的脚本

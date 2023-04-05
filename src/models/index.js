@@ -2,9 +2,14 @@
 
 const fs = require('fs')
 
-const { sequelizeConfig, DEBUG } = require('../config')
-const logging = DEBUG ? console : false
-const dbUtil = require('../utils/db_utils/db')(sequelizeConfig, logging, DEBUG)
+const { sequelizeConfig, database, knexConfig, DEBUG } = require('@config')
+const dbUtil = require('@utils/db_utils/db')({
+  sequelizeConfig,
+  database,
+  knexConfig,
+  logging: DEBUG ? 'console' : false,
+  DEBUG
+})
 let all_model_list = [__dirname + '/self', __dirname + '/pf']
 
 // 加载model文件
@@ -14,7 +19,7 @@ dbUtil.modelAssociate()
 
 let { sequelize, dbType, dbName, knex, models, tabs } = dbUtil
 
-let dbHelper = require('../utils/db_utils/dbHelper')(sequelize)
+let dbHelper = require('@utils/db_utils/dbHelper')(sequelize)
 
 dbUtil.sync()
 
@@ -35,7 +40,5 @@ let db = {
 global.db = db
 
 module.exports = app => {
-  sequelize,
-  dbType,
-  dbName
+  sequelize, dbType, dbName
 }

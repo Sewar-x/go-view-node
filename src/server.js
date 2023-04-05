@@ -1,4 +1,4 @@
-require('./utils/alias.js') //定义路径别名,注意放在文件最顶部最先执行
+require('./plugins/alias.js') //定义路径别名,注意放在文件最顶部最先执行
 const express = require('express')
 const app = express()
 const models = require('./models')
