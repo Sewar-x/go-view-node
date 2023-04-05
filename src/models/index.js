@@ -10,12 +10,9 @@ const dbUtil = require('@utils/db_utils/db')({
   logging: DEBUG ? 'console' : false,
   DEBUG
 })
-let all_model_list = [__dirname + '/self', __dirname + '/pf']
 
 // 加载model文件
-dbUtil.loadModelList(all_model_list)
-
-dbUtil.modelAssociate()
+dbUtil.loadModel()
 
 let { sequelize, dbType, dbName, knex, models, tabs } = dbUtil
 

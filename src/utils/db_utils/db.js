@@ -23,26 +23,38 @@ class DB {
     attachPaginate()
   }
 
-  async loadModel(_path) {
-    fs.readdirSync(_path) //读取当前文件夹的文件
-      .filter(file => {
-        //过滤掉index.js，因为index.js就是这份代码
-        let fix = file.substring(file.lastIndexOf('.'), file.length) //后缀名
-        // logging.info(file, fix);
-        return file.indexOf('.') !== 0 && file !== 'index.js' && fix == '.js'
-      })
-      .forEach(file => {
-        //import的方式创建model，并把它存储到db这个对象中
-        // let model = this.sequelize.import(path.join(_path, file)) // 5.x 版本写法
-        let model = require(path.join(_path, file))(this.sequelize, DataTypes) // 6.x 版本写法
-        this.models[model.name] = model
-        this.tabs.push(model.name)
-      })
+  loadModel(_path) {
+    // 获取 Models 的路径
+    const folderPath = _path || path.join(__dirname, '../../models')
+    // 获取models 下的文件夹和文件
+    const modelsFolder = fs.readdirSync(folderPath)
+    //过滤出 models 下的文件夹
+    const folders = modelsFolder.filter(file => {
+      //过滤掉index.js，因为index.js就是这份代码
+      let fix = file.substring(file.lastIndexOf('.'), file.length) //后缀名
+      return fix.indexOf('.') !== 0 && file !== 'index.js' && fix !== '.js'
+    })
+    folders.forEach(foldersName => {
+      this.loadModelFiles(folderPath, foldersName)
+    })
+    this.modelAssociate()
   }
 
-  async loadModelList(_path_list) {
-    _path_list.forEach(_path => {
-      this.loadModel(_path)
+  /**
+   * 加载指定文件夹下的所有模型文件
+   * @param {*} parentFolder model 下文件夹
+   * @param {*} foldersName model 的文件夹目录名称
+   */
+  loadModelFiles(parentFolder, foldersName) {
+    // 获取 models 文件夹下的文件夹路径
+    const chilFolderPath = path.join(parentFolder, foldersName)
+    const folderFiles = fs.readdirSync(chilFolderPath)
+    folderFiles.forEach(fileName => {
+      //import的方式创建model，并把它存储到db这个对象中
+      const modelsFile = require(path.join(chilFolderPath, fileName))
+      let model = modelsFile(this.sequelize, DataTypes) // 6.x 版本写法
+      this.models[model.name] = model
+      this.tabs.push(model.name)
     })
   }
 

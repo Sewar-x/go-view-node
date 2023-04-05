@@ -11,7 +11,7 @@ const getFiles = (path, content, onlyIndexFiles) => {
   //extname: 返回path路径文件扩展名，如果path以 ‘.' 为结尾，将返回 ‘.'，如果无扩展名 又 不以'.'结尾，将返回空值。
   //basename: path.basename(p, [ext]) p->要处理的path ext->要过滤的字符
   fs.readdirSync(path).forEach(filename => {
-    const statPath = `${path}/${filename}`
+    const statPath = Path.join(path, filename)
     const stats = fs.statSync(statPath) // fs.stat 方法来获取文件或文件夹的信息
 
     //判断是否为文件夹，文件夹递归获取 js 文件
