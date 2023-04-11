@@ -3,7 +3,7 @@
 // 由于在knex查询时会用到
 const moment = require('moment')
 const { DEBUG } = require('@config')
-const { dbHelper, dbType, knex, sequelize, api } = db
+const { dbHelper, dbType, sequelize, api } = db
 
 // 根据 apiid获取相应的脚本
 const getScriptByApiId = async apiId => {
@@ -85,19 +85,7 @@ const getApiData = async ({ script, script_type, params }) => {
   } else if (script_type == '9') {
     let _script = await dbHelper.reaplceSqlParam(script, params)
     logger.info(`script=${_script}`)
-    // 需要从db中引入 knex 否则，无法执行
-    // 执行knex脚本
-    // data = await await eval(` knex('dev_menu').select().where({ type: 'F', use: '1', dev: 1 }).orderBy('list_order')`)
-    // knex('pms_plan')
-    //       .select()
-    //       .where({ company_id: '@company_id@', plant_id: '@plant_id@', line: '@line@' })
-    //       .whereBetween('created_at', [moment('@GTD@').format('YYYY-MM-DDTHH:mm:ssZ'), moment('@LTD@').format('YYYY-MM-DDTHH:mm:ssZ')])
-    //       .where(qb => {
-    //         if ('@model@') qb.where('model', '@model@')
-    //         if ('@sn@') qb.where('sn', 'like', `%@sn@%`)
-    //       })
-    //       .orderBy([ { column: 'plan_date' }, { column: 'list_order', order: 'asc' } ])
-    //       .paginate({ perPage: @rows@, currentPage: @page@ })
+
     data = await await eval(_script)
   }
   res_data.data = data

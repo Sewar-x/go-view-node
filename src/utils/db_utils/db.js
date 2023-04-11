@@ -2,9 +2,6 @@
 const fs = require('fs')
 const path = require('path')
 const { Sequelize, DataTypes } = require('sequelize')
-const Knex = require('knex')
-// 用于处理分页
-const { attachPaginate } = require('knex-paginate')
 
 class DB {
   //构造函数
@@ -13,14 +10,13 @@ class DB {
     this.sequelize = new Sequelize(sequelizeConfig.database, sequelizeConfig.username, sequelizeConfig.password, sequelizeConfig.connect, {
       // 控制台输出查询日志
       logging: logging.info,
+      // 事务隔离级别：可串行化(Serializable)
       isolationLevel: Sequelize.Transaction.ISOLATION_LEVELS.SERIALIZABLE
     })
     this.tabs = []
     this.models = {}
     this.dbType = database.DATABASE
     this.dbName = database.DB_NAME
-    this.knex = Knex(knexConfig)
-    attachPaginate()
   }
 
   loadModel(_path) {
@@ -37,7 +33,7 @@ class DB {
     folders.forEach(foldersName => {
       this.loadModelFiles(folderPath, foldersName)
     })
-    this.modelAssociate()
+    return this.modelAssociate()
   }
 
   /**
@@ -67,14 +63,15 @@ class DB {
       }
     })
     this.models = _models
+    return _models
   }
 
   async hasConection() {
     try {
-      await sequelize.authenticate()
-      console.log('connect to db ok!')
+      return await sequelize.authenticate()
     } catch (error) {
       console.error('connect to db error ', error)
+      return false
     }
   }
 
@@ -87,7 +84,4 @@ class DB {
   }
 }
 
-module.exports = (sequelizeConfig, logging = false) => {
-  let _db = new DB(sequelizeConfig, logging)
-  return _db
-}
+module.exports = DB

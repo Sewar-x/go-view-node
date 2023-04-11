@@ -1,9 +1,8 @@
 'use strict'
 
-const fs = require('fs')
-
+const DB = require('@utils/db_utils/db')
 const { sequelizeConfig, database, knexConfig, DEBUG } = require('@config')
-const dbUtil = require('@utils/db_utils/db')({
+const dbUtil = new DB({
   sequelizeConfig,
   database,
   knexConfig,
@@ -14,7 +13,7 @@ const dbUtil = require('@utils/db_utils/db')({
 // 加载model文件
 dbUtil.loadModel()
 
-let { sequelize, dbType, dbName, knex, models, tabs } = dbUtil
+let { sequelize, dbType, dbName, models, tabs } = dbUtil
 
 let dbHelper = require('@utils/db_utils/dbHelper')(sequelize)
 
@@ -30,8 +29,7 @@ let db = {
   dbName,
   ...models,
   tabs,
-  dbHelper,
-  knex
+  dbHelper
 }
 
 global.db = db

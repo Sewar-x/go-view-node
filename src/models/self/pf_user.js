@@ -16,9 +16,11 @@ module.exports = function (sequelize, DataTypes) {
       username: {
         type: DataTypes.STRING,
         unique: true,
-        allowNull: false,
+        allowNull: false, //唯一约束,约束是在 SQL 级别定义的规则, 如果约束检查失败,则数据库将引发错误,并且 Sequelize 会将错误转发给 JavaScript
+        //验证是在纯 JavaScript 中在 Sequelize 级别执行的检查,如果验证失败,则根本不会将 SQL 查询发送到数据库.
         validate: {
-          notEmpty: true
+          notEmpty: true,
+          len: [2, 32] //验证其长度在3到15个字符之间
         }
       },
       email: {
@@ -31,7 +33,12 @@ module.exports = function (sequelize, DataTypes) {
         }
       },
       password: {
-        type: DataTypes.STRING
+        type: DataTypes.STRING,
+        set(value) {
+          // 在数据库中以明文形式存储密码是很糟糕的.
+          // 使用适当的哈希函数来加密哈希值更好.
+          this.setDataValue('password', hash(value))
+        }
       },
       salt: {
         type: DataTypes.STRING
@@ -52,14 +59,7 @@ module.exports = function (sequelize, DataTypes) {
         type: DataTypes.ENUM('0', '1'),
         defaultValue: '0'
       },
-      email: {
-        type: DataTypes.STRING,
-        validate: {
-          isEmail: {
-            msg: '用户账号必须是邮箱！'
-          }
-        }
-      },
+
       phone: {
         type: DataTypes.STRING(11),
         allowNull: false,

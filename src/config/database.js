@@ -26,7 +26,7 @@ module.exports = {
     connect: {
       host: DB.DB_HOST,
       port: DB.DB_PORT,
-      dialect: DB.DATABASE,
+      dialect: DB.DATABASE, //数据库类型
       dialectOptions: {
         options: {
           encrypt: false,
@@ -34,10 +34,10 @@ module.exports = {
         },
         dateStrings: true,
         typeCast: true,
-        multipleStatements: true,
-        charset: DB.CHARSET,
-        supportBigNumbers: true,
-        bigNumberStrings: true,
+        multipleStatements: true,//是否允许在单个查询中执行多个语句，用于MySQL。默认为false。
+        charset: DB.CHARSET,// 连接字符集，用于MySQL。默认为utf8mb4
+        supportBigNumbers: true, // 是否支持大数字，用于MySQL。默认为true。
+        bigNumberStrings: true,//是否将大数字作为字符串返回，用于MySQL。默认为false。
         decimalNumbers: true
       },
       timezone: DB.TIMEZONE,
@@ -47,7 +47,7 @@ module.exports = {
         timestamps: true, //加属性created_at和updated_at
         createdAt: 'created_at', //将包含代表创建时刻的时间戳,
         updatedAt: 'updated_at', //将包含最新更新的时间戳
-        paranoid: false //开启假删除
+        paranoid: false //开启假删除,注意 Paranoid 需要时间戳才能起作用(即,如果你传递 timestamps: false 了,paranoid 将不起作用).
       },
       // 定义全局的钩子
       hooks: {
@@ -65,33 +65,6 @@ module.exports = {
         idle: 10000 //空闲最长连接时间
       }
     }
-  },
-  knexConfig: {
-    client: 'mysql2',
-    connection: {
-      host: DB.DB_HOST,
-      port: DB.DB_PORT,
-      user: DB.DB_NAME,
-      password: DB.DB_PWD,
-      database: DB.DATABASE,
-      timezone: DB.TIMEZONE,
-      // 方法一
-      dateStrings: true,
-      useNullAsDefault: true
-    },
-    debug: DEBUG,
-    log: {
-      debug(msg) {
-        if (msg?.sql) return false
-          let {  bindings } = msg
-          if (bindings) {
-            if (bindings.length == 0) logger.info(`【knex ${DB.KNEX_CLIENT}】` + sql)
-            else logger.info(`【knex ${DB.KNEX_CLIENT}】` + sql, `[ ${bindings.join(', ')} ]`)
-          } else {
-            logger.info(`【knex ${DB.KNEX_CLIENT}】` + sql)
-          }
-        
-      }
-    }
   }
+
 }
