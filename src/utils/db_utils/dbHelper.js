@@ -15,8 +15,8 @@ const chg_val = (val, type = 'int') => {
 class DbHelper {
   constructor(sequelize) {
     this.sequelize = sequelize
-    this.dbType = sequelize.options.dialect
-    this.QueryTypes = sequelize.QueryTypes
+    this.dbType = sequelize?.options?.dialect
+    this.QueryTypes = sequelize.QueryTypes //查询类型
   }
 
   async reaplceSqlParam(sql, params) {

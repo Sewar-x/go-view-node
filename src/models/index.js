@@ -2,7 +2,7 @@
 
 const DB = require('@utils/db_utils/db')
 const { sequelizeConfig, database, knexConfig, DEBUG } = require('@config')
-const dbUtil = new DB({
+const dbInstance = new DB({
   sequelizeConfig,
   database,
   knexConfig,
@@ -11,15 +11,15 @@ const dbUtil = new DB({
 })
 
 // 加载model文件
-dbUtil.loadModel()
+dbInstance.loadModel()
+//一次同步所有模型
+dbInstance.sync()
 
-let { sequelize, dbType, dbName, models, tabs } = dbUtil
+let { sequelize, dbType, dbName, models, tabs } = dbInstance
 
 let dbHelper = require('@utils/db_utils/dbHelper')(sequelize)
 
-dbUtil.sync()
-
-dbUtil.dbHelper = dbHelper
+dbInstance.dbHelper = dbHelper
 
 // plg_common 和 smt_xx 都用db作为数据加载的依据
 
@@ -35,5 +35,5 @@ let db = {
 global.db = db
 
 module.exports = app => {
-  sequelize, dbType, dbName
+  sequelize, dbType, dbName, tabs, dbHelper
 }

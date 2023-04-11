@@ -27,7 +27,7 @@ const responseErrorFormatter = (req, res, next) => {
       data: data || {}
     }
     // 记录错误日志
-    log && log('error', new Error(Object.assign({}, response, res.logInfo)))
+    log && log('error', Object.assign({}, response, res.logInfo))
     res.status(status).json(response)
   }
 }

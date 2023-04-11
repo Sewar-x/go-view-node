@@ -19,20 +19,31 @@ class DB {
     this.dbName = database.DB_NAME
   }
 
+  /**
+   * 加载指定路径下的所有模型，如果没有传入 路径，默认加载 models 路径下的模型
+   * @param {*} _path
+   * @returns
+   */
   loadModel(_path) {
-    // 获取 Models 的路径
-    const folderPath = _path || path.join(__dirname, '../../models')
-    // 获取models 下的文件夹和文件
-    const modelsFolder = fs.readdirSync(folderPath)
-    //过滤出 models 下的文件夹
-    const folders = modelsFolder.filter(file => {
-      //过滤掉index.js，因为index.js就是这份代码
-      let fix = file.substring(file.lastIndexOf('.'), file.length) //后缀名
-      return fix.indexOf('.') !== 0 && file !== 'index.js' && fix !== '.js'
-    })
-    folders.forEach(foldersName => {
-      this.loadModelFiles(folderPath, foldersName)
-    })
+    try {
+      // 获取 Models 的路径
+      const folderPath = _path || path.join(__dirname, '../../models')
+      // 获取models 下的文件夹和文件
+      const modelsFolder = fs.readdirSync(folderPath)
+      if (!modelsFolder || modelsFolder.length === 0) return false
+      //过滤出 models 下的文件夹
+      const folders = modelsFolder.filter(file => {
+        //过滤掉index.js，因为index.js就是这份代码
+        let fix = file.substring(file.lastIndexOf('.'), file.length) //后缀名
+        return fix.indexOf('.') !== 0 && file !== 'index.js' && fix !== '.js'
+      })
+      folders.forEach(foldersName => {
+        this.loadModelFiles(folderPath, foldersName)
+      })
+    } catch (err) {
+      console.log(err)
+    }
+
     return this.modelAssociate()
   }
 
