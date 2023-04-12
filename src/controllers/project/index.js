@@ -9,24 +9,6 @@ const { pf_user } = db
 const srv_led = require('@services/srv_led')
 const File = require('@utils/File')
 
-const getOssInfo = async (req, res, next) => {
-  let _m = req.method
-  let res_data = { code: 0, msg: '', data: {} }
-  try {
-    let host = req.get('host')
-    let ishttps = req.secure
-    let http = ishttps ? 'https' : 'http'
-    let oosurl = http + '://' + host + '/api/goview/project/getImages/'
-    let ossInfo = { bucketURL: oosurl, BucketName: 'getuserphoto' }
-    res_data.data = ossInfo
-    res_data.msg = '返回成功'
-    res_data.code = 200
-  } catch (error) {
-    res_data.code = 500
-    res_data.msg = error
-  }
-  return res.json(res_data)
-}
 
 const project_list = async (req, res, next) => {
   let _m = req.method
@@ -289,7 +271,6 @@ const project_get_images = async (req, res, next) => {
 }
 
 module.exports = {
-  getOssInfo,
   project_list,
   project_by_id,
   project_create,

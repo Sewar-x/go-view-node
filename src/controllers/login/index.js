@@ -1,6 +1,6 @@
 const passwordValidator = require('password-validator')
 const tokenKit = require('@utils/token_kit')
-const { startsWithStr } = require('@config')
+const { startsWithStr, tokenExpMinutes } = require('@config')
 const { Users } = db
 
 /**
@@ -32,7 +32,7 @@ const regsiter = async (req, res, next) => {
       .spaces(1, validMsg.spaces)
 
     const isValidPassword = schema.validate(password, { list: true })
-    if(isValidPassword.length !== 0) {
+    if (isValidPassword.length !== 0) {
       const msgs = isValidPassword.map(msg => validMsg[msg])
       return res.sendError({
         code: 200,
@@ -57,8 +57,10 @@ const regsiter = async (req, res, next) => {
         data: null
       })
     } else {
+      user.password = null
+      user.salt = null
       return res.sendResponse({
-        msg: '操作成功',
+        msg: '注册成功!',
         data: user
       })
     }
@@ -84,16 +86,27 @@ const login = async (req, res, next) => {
       })
     }
     //密码验证
-    let ok = await Users.validatePassword(password)
+    let ok = await Users.validatePassword(password, user.salt, user.password)
     if (!ok) {
       return res.sendError({
-        code: 200,
         msg: `用户 ${username} 登录密码密码不正确，请核查！`
       })
     }
     let token = await tokenKit().createToken(user)
     let userData = {
-      token: startsWithStr + token,
+      token: {
+        tokenName: 'Authorization',
+        tokenValue: startsWithStr + token,
+        isLogin: true,
+        loginId: user.id,
+        loginType: 'login',
+        tokenTimeout: tokenExpMinutes,
+        sessionTimeout: tokenExpMinutes,
+        tokenSessionTimeout: tokenExpMinutes,
+        tokenActivityTimeout: tokenExpMinutes,
+        loginDevice: null,
+        tag: null
+      },
       userinfo: {
         id: user.id,
         username: user.username,
@@ -121,7 +134,30 @@ const login = async (req, res, next) => {
 }
 
 const logout = async (req, res, next) => {
-  return res.json({ msg: '退出成功', code: 200 })
+  const token = req.headers.authorization.split(' ')[1]
+  if (!token) {
+    res.sendError({
+      code: 401,
+      msg: '未授权',
+      data: error
+    })
+  }
+
+  try {
+    // 验证 JWT 并使其失效
+    const decoded = tokenKit.verifyToken(token)
+    // TODO: 将 token 加入黑名单或者其他使其失效的方式
+    res.sendResponse({
+      msg: '注销成功',
+      data: null
+    })
+  } catch (error) {
+    res.sendError({
+      code: 400,
+      msg: '注销失败',
+      data: error
+    })
+  }
 }
 
 module.exports = {
