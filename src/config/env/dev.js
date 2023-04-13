@@ -1,5 +1,5 @@
-'use strict';
+'use strict'
 
-const config = {};
+const config = {}
 
-module.exports = config;
+module.exports = config

@@ -132,20 +132,25 @@ const login = async (req, res, next) => {
     })
   }
 }
-
+/**
+ * 退出登录
+ * @param {*} req
+ * @param {*} res
+ * @param {*} next
+ */
 const logout = async (req, res, next) => {
-  const token = req.headers.authorization.split(' ')[1]
+  const token = req.headers.authorization
   if (!token) {
     res.sendError({
       code: 401,
       msg: '未授权',
-      data: error
+      data: null
     })
   }
 
   try {
     // 验证 JWT 并使其失效
-    const decoded = tokenKit.verifyToken(token)
+    const decoded = await tokenKit().verifyToken(token)
     // TODO: 将 token 加入黑名单或者其他使其失效的方式
     res.sendResponse({
       msg: '注销成功',

@@ -15,7 +15,7 @@ exports.isEmptyObject = e => {
 exports.toXlsList = (rows, hasCols) => {
   hasCols = hasCols || true
   var data = new Array()
-  rows.forEach(function(item, index, input) {
+  rows.forEach(function (item, index, input) {
     if (index == 0 && hasCols) data.push(Object.keys(item))
     data.push(Object.values(item))
   })

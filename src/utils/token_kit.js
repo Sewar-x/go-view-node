@@ -1,7 +1,7 @@
 'use strict'
 
 const jwt = require('jsonwebtoken')
-const { sessionExpiresIn,startsWithStr, APP_SECRET } = require('@config')
+const { sessionExpiresIn, startsWithStr, APP_SECRET } = require('@config')
 class JwtToken {
   constructor(expiresIn, secret) {
     this.expiresIn = expiresIn
@@ -19,9 +19,9 @@ class JwtToken {
 
   async verifyToken(token) {
     if (token) {
-      if (token.startsWith(startsWith)) {
+      if (token.startsWith(startsWithStr)) {
         // Remove Bearer from string
-        token = token.slice(7, token.length)
+        token = token.slice(startsWithStr.ength, token.length)
       }
       return await jwt.verify(token, this.secret, (err, decoded) => {
         if (err) {
