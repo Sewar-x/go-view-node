@@ -2,10 +2,10 @@ const { OOS_PATH, OSS_BUCKETNAME } = require('@config')
 
 /**
  * 获取文件上传oss信息
- * @param {*} req 
- * @param {*} res 
- * @param {*} next 
- * @returns 
+ * @param {*} req
+ * @param {*} res
+ * @param {*} next
+ * @returns
  */
 const getOssInfo = async (req, res, next) => {
   try {
@@ -13,11 +13,11 @@ const getOssInfo = async (req, res, next) => {
     let ishttps = req.secure
     let http = ishttps ? 'https' : 'http'
     let oosurl = http + '://' + host + OOS_PATH
-    let ossInfo = { bucketURL: oosurl, BucketName: OSS_BUCKETNAME }
-    return res.sendError({
-      code: 200,
-      msg: '该用户已存在！',
-      data: ossInfo
+    return res.sendResponse({
+      data: {
+        bucketURL: oosurl,
+        BucketName: OSS_BUCKETNAME
+      }
     })
   } catch (error) {
     res.sendError({

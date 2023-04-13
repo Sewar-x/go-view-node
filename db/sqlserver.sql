@@ -100,13 +100,13 @@ GO
 
 
 -- ----------------------------
--- Table structure for Led_Projects
+-- Table structure for Projects
 -- ----------------------------
-IF EXISTS (SELECT * FROM sys.all_objects WHERE object_id = OBJECT_ID(N'[dbo].[Led_Projects]') AND type IN ('U'))
-	DROP TABLE [dbo].[Led_Projects]
+IF EXISTS (SELECT * FROM sys.all_objects WHERE object_id = OBJECT_ID(N'[dbo].[Projects]') AND type IN ('U'))
+	DROP TABLE [dbo].[Projects]
 GO
 
-CREATE TABLE [dbo].[Led_Projects] (
+CREATE TABLE [dbo].[Projects] (
   [Id] int  NOT NULL,
   [ProjectName] nvarchar(max) COLLATE Chinese_PRC_CI_AS  NULL,
   [State] int  NOT NULL,
@@ -120,20 +120,20 @@ CREATE TABLE [dbo].[Led_Projects] (
 )
 GO
 
-ALTER TABLE [dbo].[Led_Projects] SET (LOCK_ESCALATION = TABLE)
+ALTER TABLE [dbo].[Projects] SET (LOCK_ESCALATION = TABLE)
 GO
 
 EXEC sp_addextendedproperty
 'MS_Description', N'创建时间',
 'SCHEMA', N'dbo',
-'TABLE', N'Led_Projects',
+'TABLE', N'Projects',
 'COLUMN', N'created_at'
 GO
 
 EXEC sp_addextendedproperty
 'MS_Description', N'更新时间',
 'SCHEMA', N'dbo',
-'TABLE', N'Led_Projects',
+'TABLE', N'Projects',
 'COLUMN', N'updated_at'
 GO
 
@@ -370,9 +370,9 @@ GO
 
 
 -- ----------------------------
--- Primary Key structure for table Led_Projects
+-- Primary Key structure for table Projects
 -- ----------------------------
-ALTER TABLE [dbo].[Led_Projects] ADD CONSTRAINT [PK__Led_Proj__3214EC07A9BC41B5] PRIMARY KEY CLUSTERED ([Id])
+ALTER TABLE [dbo].[Projects] ADD CONSTRAINT [PK__Led_Proj__3214EC07A9BC41B5] PRIMARY KEY CLUSTERED ([Id])
 WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)
 ON [PRIMARY]
 GO

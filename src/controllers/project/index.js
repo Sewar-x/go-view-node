@@ -5,26 +5,26 @@ const fs = require('fs')
 const path = require('path')
 const multiparty = require('multiparty')
 const moment = require('moment')
-const { pf_user } = db
-const srv_led = require('@services/srv_led')
+const projectServ = require('@services/project')
 const File = require('@utils/File')
 
-
 const project_list = async (req, res, next) => {
-  let _m = req.method
-  let res_data = { code: 0, data: [], count: 0, msg: '' }
   try {
-    let { page, limit } = req.query
-    let { data, count } = await srv_led.project_list({ page, limit })
-    res_data.data = data
-    res_data.count = count
-    res_data.msg = '操作成功'
-    res_data.code = 200
+    let { page, limit } = req.getParams()
+    let { data, count } = await projectServ.project_list({ page, limit })
+    return res.sendResponse({
+      data,
+      params: {
+        count,
+        limit: Number(limit)
+      }
+    })
   } catch (error) {
-    res_data.code = 500
-    res_data.msg = error
+    res.sendError({
+      msg: '系统错误',
+      data: error
+    })
   }
-  return res.json(res_data)
 }
 
 const project_by_id = async (req, res, next) => {
@@ -33,8 +33,8 @@ const project_by_id = async (req, res, next) => {
   try {
     let { projectId } = req.query
     let data = {}
-    data = await srv_led.getProjectsById(projectId)
-    let projectdatas = await srv_led.getProjectdatasByProjectId(projectId)
+    data = await projectServ.getProjectsById(projectId)
+    let projectdatas = await projectServ.getProjectdatasByProjectId(projectId)
     if (projectdatas) {
       data.content = projectdatas.contentData
     } else {
@@ -60,7 +60,7 @@ const project_create = async (req, res, next) => {
     // "projectName": "测试项目2", //项目名称
     // "remarks": "测试项目2" //项目简介
     let { indexImage, projectName, remarks } = req.body
-    let data = await srv_led.project_upsert(req.body)
+    let data = await projectServ.project_upsert(req.body)
     res_data.data = data
     res_data.msg = '操作成功'
     res_data.code = 200
@@ -81,7 +81,7 @@ const project_edit = async (req, res, next) => {
     // "projectName": "测试项目2", //项目名称
     // "remarks": "测试项目2" //项目简介
     let { id, indexImage, projectName, remarks } = req.body
-    let ok = await srv_led.project_upsert(req.body)
+    let ok = await projectServ.project_upsert(req.body)
 
     res_data.msg = '操作成功'
     res_data.code = 200
@@ -99,7 +99,7 @@ const project_delete = async (req, res, next) => {
   try {
     let { ids } = req.query
     console.log('project_delete ids: ', ids)
-    let ok = await srv_led.project_delete(ids)
+    let ok = await projectServ.project_delete(ids)
     res_data.msg = '操作成功'
     res_data.code = 200
   } catch (error) {
@@ -118,7 +118,7 @@ const project_publish = async (req, res, next) => {
     // "state": "-1" //项目状态[-1未发布,1发布]
     let { id, state } = req.body
 
-    let ok = await srv_led.project_publish({ id, state })
+    let ok = await projectServ.project_publish({ id, state })
     res_data.msg = '操作成功'
     res_data.code = 200
   } catch (error) {
@@ -136,7 +136,7 @@ const project_data_save = async (req, res, next) => {
     // projectId 687926057864663040
     // content 1111
     let { projectId, content } = req.body
-    let data = await srv_led.project_data_save({ projectId, content })
+    let data = await projectServ.project_data_save({ projectId, content })
     res_data.msg = '操作成功'
     res_data.code = 200
     res_data.data = data

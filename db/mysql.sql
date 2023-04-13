@@ -18,10 +18,10 @@ CREATE TABLE `Led_Projectdatas` (
 
 
 -- ----------------------------
--- Table structure for Led_Projects
+-- Table structure for Projects
 -- ----------------------------
-DROP TABLE IF EXISTS `Led_Projects`;
-CREATE TABLE `Led_Projects` (
+DROP TABLE IF EXISTS `Projects`;
+CREATE TABLE `Projects` (
   `Id` int NOT NULL AUTO_INCREMENT,
   `ProjectName` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   `State` int NOT NULL,

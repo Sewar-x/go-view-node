@@ -4,11 +4,12 @@
 const { log } = require('./logger')
 const responseFormatter = (req, res, next) => {
   // 在 res 对象中定义一个 sendResponse 方法
-  res.sendResponse = ({ code, msg, data }) => {
+  res.sendResponse = ({ code, msg, data, params = {} }) => {
     const status = code || 200
     const response = {
       code: status,
-      msg: msg,
+      msg: msg || '操作成功!',
+      ...params,
       data: data || {}
     }
     // 记录错误日志
@@ -19,11 +20,12 @@ const responseFormatter = (req, res, next) => {
 
 const responseErrorFormatter = (req, res, next) => {
   // 在 res 对象中定义一个 sendResponse 方法
-  res.sendError = ({ code, msg, data }) => {
+  res.sendError = ({ code, msg, data, params = {} }) => {
     const status = code || 500
     const response = {
       code: status,
-      msg: msg,
+      msg: msg || '操作失败!',
+      ...params,
       data: data || {}
     }
     // 记录错误日志

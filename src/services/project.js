@@ -1,24 +1,21 @@
 'use strict'
 
-const { sequelize, Led_Projects, Led_Projectdatas } = db
-
-// Led_Projects, Led_Projectdatas  对应的model要求字段首字母小写，为了适配go-view前台，所以只能在model层进行字段的处理
+const { sequelize, Projects, Led_Projectdatas } = db
 
 const getProjectsById = async id => {
   let data = {}
-  data = await Led_Projects.findOne({ where: { id: id }, raw: true })
+  data = await Projects.findOne({ where: { id: id }, raw: true })
   return data
 }
 
 const project_delete = async id => {
-  console.log('id: ', id)
   let ok = true
 
   let transaction
   try {
     transaction = await sequelize.transaction()
     await Led_Projectdatas.destroy({ where: { projectId: id }, transaction: transaction })
-    await Led_Projects.destroy({ where: { id: id }, transaction: transaction })
+    await Projects.destroy({ where: { id: id }, transaction: transaction })
     await transaction.commit()
   } catch (err) {
     ok = false
@@ -42,7 +39,7 @@ const project_list = async ({ page, limit }) => {
       order: [['id', 'ASC']],
       raw: true
     }
-    let tmp = await Led_Projects.findAndCountAll(condition)
+    let tmp = await Projects.findAndCountAll(condition)
     if (tmp) {
       res.count = tmp.count
       res.data = tmp.rows
@@ -66,10 +63,10 @@ const getProjectdatasByProjectId = async projectId => {
 const project_publish = async ({ id: projectId, state }) => {
   let ok = false
   try {
-    let data = await Led_Projects.findOne({ where: { id: projectId }, raw: true })
+    let data = await Projects.findOne({ where: { id: projectId }, raw: true })
     console.log('project_publish data: ', data)
     if (data) {
-      await Led_Projects.update({ state: state }, { where: { id: projectId } })
+      await Projects.update({ state: state }, { where: { id: projectId } })
       ok = true
     }
   } catch (err) {
@@ -88,14 +85,14 @@ const project_upsert = async params => {
     _params = { projectName, indexImage, remarks }
     if (params.hasOwnProperty('id')) {
       let id = params.id
-      data = await Led_Projects.findOne({ where: { id: id }, raw: true })
+      data = await Projects.findOne({ where: { id: id }, raw: true })
       if (data) {
-        await Led_Projects.update(_params, { where: { id: id } })
-        data = await Led_Projects.findOne({ where: { id: id }, raw: true })
+        await Projects.update(_params, { where: { id: id } })
+        data = await Projects.findOne({ where: { id: id }, raw: true })
       }
     } else {
       _params = { projectName, indexImage, remarks, state: -1, isDelete: -1, createTime: new Date() }
-      data = await Led_Projects.create(_params, { returning: true, raw: true })
+      data = await Projects.create(_params, { returning: true, raw: true })
     }
   } catch (err) {
     console.log('project_upsert failed due to DB error', err)
