@@ -1,6 +1,6 @@
 'use strict'
 
-const { sequelize, Projects, Led_Projectdatas } = db
+const { sequelize, Projects, Projectdatas } = db
 
 const getProjectsById = async id => {
   let data = {}
@@ -14,7 +14,7 @@ const project_delete = async id => {
   let transaction
   try {
     transaction = await sequelize.transaction()
-    await Led_Projectdatas.destroy({ where: { projectId: id }, transaction: transaction })
+    await Projectdatas.destroy({ where: { projectId: id }, transaction: transaction })
     await Projects.destroy({ where: { id: id }, transaction: transaction })
     await transaction.commit()
   } catch (err) {
@@ -50,13 +50,13 @@ const project_list = async ({ page, limit }) => {
 
 const getProjectdatasById = async id => {
   let data = {}
-  data = await Led_Projectdatas.findOne({ where: { id: id }, raw: true })
+  data = await Projectdatas.findOne({ where: { id: id }, raw: true })
   return data
 }
 
 const getProjectdatasByProjectId = async projectId => {
   let data = {}
-  data = await Led_Projectdatas.findOne({ where: { projectId: projectId }, raw: true })
+  data = await Projectdatas.findOne({ where: { projectId: projectId }, raw: true })
   return data
 }
 
@@ -107,13 +107,13 @@ const project_data_save = async ({ projectId, content: contentData }) => {
   let transaction
   try {
     transaction = await sequelize.transaction()
-    data = await Led_Projectdatas.findOne({ where: { projectId: projectId }, raw: true, transaction: transaction })
+    data = await Projectdatas.findOne({ where: { projectId: projectId }, raw: true, transaction: transaction })
     if (data) {
-      await Led_Projectdatas.update({ contentData: contentData }, { where: { id: data.id }, transaction: transaction })
+      await Projectdatas.update({ contentData: contentData }, { where: { id: data.id }, transaction: transaction })
     } else {
-      await Led_Projectdatas.create({ projectId: projectId, contentData: contentData, createTime: new Date() }, { transaction: transaction })
+      await Projectdatas.create({ projectId: projectId, contentData: contentData, createTime: new Date() }, { transaction: transaction })
     }
-    data = await Led_Projectdatas.findOne({ where: { projectId: projectId }, raw: true, transaction: transaction })
+    data = await Projectdatas.findOne({ where: { projectId: projectId }, raw: true, transaction: transaction })
     await transaction.commit()
   } catch (err) {
     console.log('project_data_save failed due to DB error', err)

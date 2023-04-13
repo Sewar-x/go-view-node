@@ -10,9 +10,9 @@
       "ignore_watch": ["node_modules", "logs"],
       "merge_logs": true,
       "min_uptime": "20s",
-      "out_file": "./logs/pm2/led_api_out.log",
-      "pid_file": "./logs/pm2/led_api.pid",
-      "error_file": "./logs/pm2/led_api_err.log",
+      "out_file": "./logs/pm2/project_api_out.log",
+      "pid_file": "./logs/pm2/project_api.pid",
+      "error_file": "./logs/pm2/project_api_err.log",
       "env": {
         "NODE_ENV": "prod",
         "logging": "on"

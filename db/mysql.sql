@@ -2,10 +2,10 @@ SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 
 -- ----------------------------
--- Table structure for Led_Projectdatas
+-- Table structure for Projectdatas
 -- ----------------------------
-DROP TABLE IF EXISTS `Led_Projectdatas`;
-CREATE TABLE `Led_Projectdatas` (
+DROP TABLE IF EXISTS `Projectdatas`;
+CREATE TABLE `Projectdatas` (
   `Id` int NOT NULL AUTO_INCREMENT,
   `ProjectId` int NOT NULL,
   `CreateTime` datetime(6) DEFAULT NULL,
@@ -36,10 +36,10 @@ CREATE TABLE `Projects` (
 ) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
--- Table structure for pf_user
+-- Table structure for users
 -- ----------------------------
-DROP TABLE IF EXISTS `pf_user`;
-CREATE TABLE `pf_user` (
+DROP TABLE IF EXISTS `users`;
+CREATE TABLE `users` (
   `id` int NOT NULL AUTO_INCREMENT,
   `username` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '用户名',
   `nick` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '昵称',
@@ -70,10 +70,10 @@ CREATE TABLE `pf_user` (
 ) ENGINE=InnoDB AUTO_INCREMENT=72 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
--- Records of pf_user
+-- Records of users
 -- ----------------------------
 BEGIN;
-INSERT INTO `pf_user` (`id`, `username`, `nick`, `password`, `salt`, `birthday`, `gender`, `email`, `phone`, `state`, `description`, `login_count`, `previous_visit`, `last_visit`, `del_flag`, `last_visit_ip`, `depart_no`, `avatar_url`, `source`, `inviteman`, `company_id`, `created_at`, `created_by`, `updated_at`, `updated_by`) VALUES (1, 'admin', '管理员', '$2a$10$qZA9J6wMpUw2s9BHl0sv9eHHTe2rw2lv5kQ2uq.eJbVR1OKFKEfy.', '$2a$10$qZA9J6wMpUw2s9BHl0sv9e', '', '1', '285861181@qq.com', '15571981868', NULL, '', NULL, NULL, NULL, 0, '', NULL, NULL, NULL, NULL, 'dc3c7050-5486-11ea-b47c-6d1213299572', '2017-10-04 19:22:05', NULL, '2020-01-03 17:26:44', NULL);
+INSERT INTO `users` (`id`, `username`, `nick`, `password`, `salt`, `birthday`, `gender`, `email`, `phone`, `state`, `description`, `login_count`, `previous_visit`, `last_visit`, `del_flag`, `last_visit_ip`, `depart_no`, `avatar_url`, `source`, `inviteman`, `company_id`, `created_at`, `created_by`, `updated_at`, `updated_by`) VALUES (1, 'admin', '管理员', '$2a$10$qZA9J6wMpUw2s9BHl0sv9eHHTe2rw2lv5kQ2uq.eJbVR1OKFKEfy.', '$2a$10$qZA9J6wMpUw2s9BHl0sv9e', '', '1', '285861181@qq.com', '15571981868', NULL, '', NULL, NULL, NULL, 0, '', NULL, NULL, NULL, NULL, 'dc3c7050-5486-11ea-b47c-6d1213299572', '2017-10-04 19:22:05', NULL, '2020-01-03 17:26:44', NULL);
 COMMIT;
 
 

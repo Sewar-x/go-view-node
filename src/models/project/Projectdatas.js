@@ -1,7 +1,7 @@
 /* jshint indent: 2 */
 
 module.exports = function (sequelize, DataTypes) {
-  return sequelize.define('Led_Projectdatas', {
+  return sequelize.define('Projectdatas', {
     id: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
