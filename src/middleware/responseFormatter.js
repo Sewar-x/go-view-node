@@ -1,14 +1,15 @@
 /**
  * 封装请求响应方法
  */
+const { codeEnums, codeMsgEnums } = require('@enums/response.js')
 const { log } = require('./logger')
 const responseFormatter = (req, res, next) => {
   // 在 res 对象中定义一个 sendResponse 方法
   res.sendResponse = ({ code, msg, data, params = {} }) => {
-    const status = code || 200
+    const status = code || codeEnums.OK
     const response = {
       code: status,
-      msg: msg || '操作成功!',
+      msg: msg || codeMsgEnums[codeEnums.OK],
       ...params,
       data: data || {}
     }
@@ -21,10 +22,10 @@ const responseFormatter = (req, res, next) => {
 const responseErrorFormatter = (req, res, next) => {
   // 在 res 对象中定义一个 sendResponse 方法
   res.sendError = ({ code, msg, data, params = {} }) => {
-    const status = code || 500
+    const status = code || codeEnums.BadRequest
     const response = {
       code: status,
-      msg: msg || '操作失败!',
+      msg: msg || codeMsgEnums[codeEnums.BadRequest],
       ...params,
       data: data || {}
     }

@@ -1,7 +1,7 @@
 /**
  * ================数据库配置============================
  */
-const utils = require('@utils/db_utils/sequelize')
+const utils = require('@plugins/db/sequelize')
 const { DEBUG } = require('./system')
 const DB = {
   DB_HOST: '127.0.0.1',

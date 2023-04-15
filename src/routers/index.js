@@ -1,5 +1,5 @@
 'use strict'
-const { PERFIX } = require('@config')
+const { ROUTE } = require('@config')
 
 /**
  * 自动注册所有路由
@@ -9,7 +9,7 @@ const { PERFIX } = require('@config')
 const registerRouters = (app, router) => {
   const routers = app.routers
   for (let routeKey in routers) {
-    router.use(PERFIX, routers[routeKey](app,router))
+    router.use(ROUTE.PERFIX, routers[routeKey](app,router))
   }
 }
 

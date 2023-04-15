@@ -1,6 +1,6 @@
 'use strict'
 
-const { UPLOAD_PATH } = require('@config')
+const { SYSTEM } = require('@config')
 const fs = require('fs')
 const path = require('path')
 const multiparty = require('multiparty')
@@ -9,6 +9,7 @@ const projectServ = require('@services/project')
 const File = require('@utils/File')
 
 const project_list = async (req, res, next) => {
+
   try {
     let { page, limit } = req.getParams()
     let { data, count } = await projectServ.project_list({ page, limit })
@@ -152,7 +153,7 @@ const project_data_save = async (req, res, next) => {
 const project_upload = async (req, res, next) => {
   let _m = req.method
   let res_data = { code: 0, msg: '', data: {} }
-  let uploadDir = UPLOAD_PATH
+  let uploadDir = SYSTEM.UPLOAD_PATH
   if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir)
   }
@@ -229,7 +230,7 @@ const project_get_images = async (req, res, next) => {
     return res.json(res_data)
   }
   try {
-    let uploadDir = UPLOAD_PATH
+    let uploadDir = SYSTEM.UPLOAD_PATH
     if (!fs.existsSync(uploadDir)) {
       fs.mkdirSync(uploadDir)
     }

@@ -13,9 +13,14 @@ function getFilesFromFold() {
     const files = fs.readdirSync(path.join(__dirname, '../'))
     files.forEach(file => {
       let extname = path.extname(file)
+
       if (extname === '.js') {
+        const fileName = file.split('.')[0]
         const filePath = path.join(path.join(__dirname, '../'), file)
-        modules.push(require(filePath))
+        const mod = require(filePath)
+        modules.push({
+          [fileName.toUpperCase()]: mod
+        })
       }
     })
 

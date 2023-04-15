@@ -1,13 +1,12 @@
 'use strict'
 
-const DB = require('@utils/db_utils/db')
-const { sequelizeConfig, database, knexConfig, DEBUG } = require('@config')
+const DB = require('@plugins/db/db')
+const { DATABASE, SYSTEM } = require('@config')
 const dbInstance = new DB({
-  sequelizeConfig,
-  database,
-  knexConfig,
-  logging: DEBUG ? 'console' : false,
-  DEBUG
+  sequelizeConfig: DATABASE.sequelizeConfig,
+  database: DATABASE.database,
+  logging: SYSTEM.DEBUG ? 'console' : false,
+  DEBUG: SYSTEM.DEBUG
 })
 
 // 加载model文件
@@ -17,7 +16,7 @@ dbInstance.sync()
 
 let { sequelize, dbType, dbName, models, tabs } = dbInstance
 
-let dbHelper = require('@utils/db_utils/dbHelper')(sequelize)
+let dbHelper = require('@plugins/db/dbHelper')(sequelize)
 
 dbInstance.dbHelper = dbHelper
 

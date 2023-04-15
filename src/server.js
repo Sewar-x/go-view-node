@@ -15,12 +15,12 @@ function bootstrap() {
 }
 
 bootstrap()
-const { PORT } = require('./config')
+const { APP } = require('./config')
 // set port, listen for requests
-app.listen(PORT, '0.0.0.0', () => {
+app.listen(APP.PORT, APP.LOCAL_ADDR, () => {
   console.log(`
       ===================================================================
-        🛡️  Server listening on: http://${ip.address()}:${PORT} 🛡️
+        🛡️  Server listening on: http://${ip.address()}:${APP.PORT} 🛡️
       ===================================================================
     `)
 })

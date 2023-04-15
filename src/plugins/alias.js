@@ -12,7 +12,9 @@ module.exports = (() => {
     '@routers': '../routers',
     '@utils': '../utils',
     '@services': '../services',
+    '@enums': '../enums',
     '@package': '../../package.json'
+    
   }
 
   for (let name in alias) {

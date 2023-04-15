@@ -1,4 +1,4 @@
-const { OOS_PATH, OSS_BUCKETNAME } = require('@config')
+const { SYSTEM } = require('@config')
 
 /**
  * 获取文件上传oss信息
@@ -12,11 +12,11 @@ const getOssInfo = async (req, res, next) => {
     let host = req.get('host')
     let ishttps = req.secure
     let http = ishttps ? 'https' : 'http'
-    let oosurl = http + '://' + host + OOS_PATH
+    let oosurl = http + '://' + host + SYSTEM.OOS_PATH
     return res.sendResponse({
       data: {
         bucketURL: oosurl,
-        BucketName: OSS_BUCKETNAME
+        BucketName: SYSTEM.OSS_BUCKETNAME
       }
     })
   } catch (error) {

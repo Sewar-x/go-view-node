@@ -1,7 +1,8 @@
 const passwordValidator = require('password-validator')
-const tokenKit = require('@utils/token_kit')
-const { startsWithStr, tokenExpMinutes } = require('@config')
+const tokenKit = require('@plugins/token')
+const { TOKEN } = require('@config')
 const { Users } = db
+const { codeEnums, codeMsgEnums, tokenCodeMsgEnums, tokenCodeEnums } = require('@enums/response.js')
 
 /**
  * 用户注册
@@ -35,7 +36,7 @@ const regsiter = async (req, res, next) => {
     if (isValidPassword.length !== 0) {
       const msgs = isValidPassword.map(msg => validMsg[msg])
       return res.sendError({
-        code: 200,
+        code: codeEnums.OK,
         msg: `密码设置错误! 密码 ${msgs.join(';')}`,
         data: null
       })
@@ -52,7 +53,7 @@ const regsiter = async (req, res, next) => {
     })
     if (!created) {
       return res.sendError({
-        code: 200,
+        code: codeEnums.OK,
         msg: '该用户已存在！',
         data: null
       })
@@ -66,7 +67,6 @@ const regsiter = async (req, res, next) => {
     }
   } catch (error) {
     res.sendError({
-      code: 500,
       msg: '系统错误',
       data: error
     })
@@ -96,14 +96,14 @@ const login = async (req, res, next) => {
     let userData = {
       token: {
         tokenName: 'Authorization',
-        tokenValue: startsWithStr + token,
+        tokenValue: TOKEN.tookenStartsWithStr + token,
         isLogin: true,
         loginId: user.id,
         loginType: 'login',
-        tokenTimeout: tokenExpMinutes,
-        sessionTimeout: tokenExpMinutes,
-        tokenSessionTimeout: tokenExpMinutes,
-        tokenActivityTimeout: tokenExpMinutes,
+        tokenTimeout: TOKEN.tokenExpMinutes,
+        sessionTimeout: TOKEN.tokenExpMinutes,
+        tokenSessionTimeout: TOKEN.tokenExpMinutes,
+        tokenActivityTimeout: TOKEN.tokenExpMinutes,
         loginDevice: null,
         tag: null
       },

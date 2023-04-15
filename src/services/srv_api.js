@@ -2,7 +2,7 @@
 
 // 由于在knex查询时会用到
 const moment = require('moment')
-const { DEBUG } = require('@config')
+const { SYSTEM } = require('@config')
 const { dbHelper, dbType, sequelize, api } = db
 
 // 根据 apiid获取相应的脚本
@@ -124,7 +124,7 @@ const getDataByApiId = async ({ apiId, params, restype }) => {
       }
       res_data.data = data
     }
-    if (DEBUG) {
+    if (SYSTEM.DEBUG) {
       await api.update({ exec_count: parseInt(exec_count) + 1 }, { where: { id: apiId } })
     }
   } catch (err) {

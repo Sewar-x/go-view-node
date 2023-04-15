@@ -1,5 +1,5 @@
 const log4js = require('log4js')
-const { LOG_CONFIG } = require('@config/index.js')
+const { LOG } = require('@config/index.js')
 // 日志配置
 log4js.configure({
   //指定要记录的日志分类
@@ -7,14 +7,14 @@ log4js.configure({
     error: {
       // 错误日志
       type: 'dateFile',
-      filename: `${LOG_CONFIG.dir}/error/error`,
+      filename: `${LOG.LOG_CONFIG.dir}/error/error`,
       pattern: 'yyyy-MM-dd.log',
       alwaysIncludePattern: true
     },
     info: {
       // 普通日志
       type: 'dateFile',
-      filename: `${LOG_CONFIG.dir}/error/info`,
+      filename: `${LOG.LOG_CONFIG.dir}/error/info`,
       pattern: 'yyyy-MM-dd.log',
       alwaysIncludePattern: true
     }
