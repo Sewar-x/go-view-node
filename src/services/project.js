@@ -2,31 +2,12 @@
 
 const { sequelize, Projects, Projectdatas } = db
 
-const getProjectsById = async id => {
-  let data = {}
-  data = await Projects.findOne({ where: { id: id }, raw: true })
-  return data
-}
-
-const project_delete = async id => {
-  let ok = true
-
-  let transaction
-  try {
-    transaction = await sequelize.transaction()
-    await Projectdatas.destroy({ where: { projectId: id }, transaction: transaction })
-    await Projects.destroy({ where: { id: id }, transaction: transaction })
-    await transaction.commit()
-  } catch (err) {
-    ok = false
-    console.log('project_delete failed due to DB error', err)
-    if (transaction) await transaction.rollback()
-  } finally {
-  }
-  return ok
-}
-
-const project_list = async ({ page, limit }) => {
+/**
+ * 获取项目列表
+ * @param {*} param0
+ * @returns
+ */
+const getProjectList = async ({ page, limit }) => {
   let res = { data: [], count: 0 }
   try {
     let _where = {}
@@ -46,6 +27,65 @@ const project_list = async ({ page, limit }) => {
     }
   } catch (error) {}
   return res
+}
+
+/**
+ * 创建/更新项目
+ * @param {*} params
+ * project.id: null, 项目主键
+ * project.indexImage: null, 图片地址
+ * project.projectName: null, 项目名称
+ * project.remarks:null, 项目简介
+ * user: {}, 请求用户信息
+ * @returns
+ */
+const setProjectUpsert = async params => {
+  let data = {}
+  try {
+    let _params = {}
+    let { projectName, indexImage, remarks } = params.project
+    _params = { projectName, indexImage, remarks }
+    if (params.hasOwnProperty('id')) {
+      //判断是否有项目 id，存在更新
+      let id = params.id
+      data = await Projects.findOne({ where: { id: id }, raw: true })
+      if (data) {
+        //存在项目，更新数据
+        await Projects.update(_params, { where: { id: id } })
+        data = await Projects.findOne({ where: { id: id }, raw: true })
+      }
+    } else {
+      //不存在项目 id，创建项目
+      _params = { createUserId: params?.user?.id, projectName, indexImage, remarks, state: -1, isDelete: -1, createTime: new Date() }
+      data = await Projects.create(_params, { returning: true, raw: true })
+    }
+  } catch (err) {
+    return err
+  }
+  return data
+}
+
+const getProjectsById = async id => {
+  let data = {}
+  data = await Projects.findOne({ where: { id: id }, raw: true })
+  return data
+}
+const project_delete = async id => {
+  let ok = true
+
+  let transaction
+  try {
+    transaction = await sequelize.transaction()
+    await Projectdatas.destroy({ where: { projectId: id }, transaction: transaction })
+    await Projects.destroy({ where: { id: id }, transaction: transaction })
+    await transaction.commit()
+  } catch (err) {
+    ok = false
+    console.log('project_delete failed due to DB error', err)
+    if (transaction) await transaction.rollback()
+  } finally {
+  }
+  return ok
 }
 
 const getProjectdatasById = async id => {
@@ -77,31 +117,6 @@ const project_publish = async ({ id: projectId, state }) => {
   return ok
 }
 
-const project_upsert = async params => {
-  let data = {}
-  try {
-    let _params = {}
-    let { projectName, indexImage, remarks } = params
-    _params = { projectName, indexImage, remarks }
-    if (params.hasOwnProperty('id')) {
-      let id = params.id
-      data = await Projects.findOne({ where: { id: id }, raw: true })
-      if (data) {
-        await Projects.update(_params, { where: { id: id } })
-        data = await Projects.findOne({ where: { id: id }, raw: true })
-      }
-    } else {
-      _params = { projectName, indexImage, remarks, state: -1, isDelete: -1, createTime: new Date() }
-      data = await Projects.create(_params, { returning: true, raw: true })
-    }
-  } catch (err) {
-    console.log('project_upsert failed due to DB error', err)
-    return data
-  } finally {
-  }
-  return data
-}
-
 const project_data_save = async ({ projectId, content: contentData }) => {
   let data = {}
   let transaction
@@ -128,8 +143,8 @@ module.exports = {
   getProjectsById,
   getProjectdatasById,
   getProjectdatasByProjectId,
-  project_list,
-  project_upsert,
+  getProjectList,
+  setProjectUpsert,
   project_delete,
   project_publish,
   project_data_save

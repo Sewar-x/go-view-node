@@ -9,10 +9,10 @@ const projectServ = require('@services/project')
 const File = require('@utils/File')
 
 const project_list = async (req, res, next) => {
-
   try {
     let { page, limit } = req.getParams()
-    let { data, count } = await projectServ.project_list({ page, limit })
+    let { data, count } = await projectServ.getProjectList({ page, limit })
+
     return res.sendResponse({
       data,
       params: {
@@ -21,8 +21,7 @@ const project_list = async (req, res, next) => {
       }
     })
   } catch (error) {
-    res.sendError({
-      msg: '系统错误',
+    return res.sendError({
       data: error
     })
   }
@@ -53,23 +52,27 @@ const project_by_id = async (req, res, next) => {
   return res.json(res_data)
 }
 
+/**
+ * 创建项目
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ * @returns 
+ */
 const project_create = async (req, res, next) => {
-  let _m = req.method
-  let res_data = { code: 0, msg: '', data: {} }
   try {
-    // "indexImage": "测试项目2", //图片地址
-    // "projectName": "测试项目2", //项目名称
-    // "remarks": "测试项目2" //项目简介
-    let { indexImage, projectName, remarks } = req.body
-    let data = await projectServ.project_upsert(req.body)
-    res_data.data = data
-    res_data.msg = '操作成功'
-    res_data.code = 200
+    let data = await projectServ.setProjectUpsert({
+      project:req.getParams(),
+      user: req.user
+    })
+    return res.sendResponse({
+      data
+    })
   } catch (error) {
-    res_data.code = 500
-    res_data.msg = error
+    return res.sendError({
+      data: error
+    })
   }
-  return res.json(res_data)
 }
 
 // 修改项目
@@ -77,12 +80,9 @@ const project_edit = async (req, res, next) => {
   let _m = req.method
   let res_data = { code: 0, msg: '' }
   try {
-    // "id": "686921059995357184", //项目主键
-    // "indexImage": "测试项目2", //图片地址
-    // "projectName": "测试项目2", //项目名称
-    // "remarks": "测试项目2" //项目简介
+
     let { id, indexImage, projectName, remarks } = req.body
-    let ok = await projectServ.project_upsert(req.body)
+    let ok = await projectServ.setProjectUpsert(req.body)
 
     res_data.msg = '操作成功'
     res_data.code = 200
