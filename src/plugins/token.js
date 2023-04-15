@@ -24,7 +24,7 @@ class JwtToken {
    * @returns
    */
   async verifyToken(token) {
-    const res_data = {
+    let res_data = {
       code: tokenCodeEnums.Unauthorized,
       name: tokenCodeMsgEnums[tokenCodeEnums.Unauthorized],
       message: tokenCodeMsgEnums[tokenCodeEnums.Unauthorized],
@@ -34,9 +34,9 @@ class JwtToken {
       return res_data
     }
 
-    if (token.startsWith(TOKEN.tookenStartsWithStr)) {
+    if (token.startsWith(TOKEN.tokenStartsWithStr)) {
       // Remove tag from string
-      token = token.slice(TOKEN.tookenStartsWithStr.length, token.length)
+      token = token.slice(TOKEN.tokenStartsWithStr.length, token.length)
     }
     try {
       const decoded = await jwt.verify(token, this.secret)

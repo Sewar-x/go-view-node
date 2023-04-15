@@ -1,4 +1,5 @@
 const bodyParser = require('body-parser')
+const cookieParser = require('cookie-parser')
 const static = require('./static.js')
 const cors = require('./cors.js')
 const responseFormatter = require('./responseFormatter.js')
@@ -18,6 +19,7 @@ module.exports = app => {
   app.use(bodyParser.urlencoded({ extended: true }))
   // 静态资源中间件
   app.use(SYSTEM.STATIC, static)
+  app.use(cookieParser())
   app.use(paramsMiddleware)
   app.use(loggerMiddleware)
   app.use(responseFormatter)

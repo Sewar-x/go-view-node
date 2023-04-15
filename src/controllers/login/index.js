@@ -2,7 +2,7 @@ const passwordValidator = require('password-validator')
 const tokenKit = require('@plugins/token')
 const { TOKEN } = require('@config')
 const { Users } = db
-const { codeEnums, codeMsgEnums, tokenCodeMsgEnums, tokenCodeEnums } = require('@enums/response.js')
+const { codeEnums } = require('@enums/response.js')
 
 /**
  * 用户注册
@@ -93,10 +93,12 @@ const login = async (req, res, next) => {
       })
     }
     let token = await tokenKit().createToken(user)
+    // 设置 cookie
+    res.cookie(TOKEN.tokenCookiesKey, token)
     let userData = {
       token: {
         tokenName: 'Authorization',
-        tokenValue: TOKEN.tookenStartsWithStr + token,
+        tokenValue: TOKEN.tokenStartsWithStr + token,
         isLogin: true,
         loginId: user.id,
         loginType: 'login',
@@ -142,23 +144,22 @@ const logout = async (req, res, next) => {
   const token = req.headers.authorization
   if (!token) {
     res.sendError({
-      code: 401,
+      code: codeEnums.Unauthorized,
       msg: '未授权',
       data: null
     })
   }
 
   try {
-    // 验证 JWT 并使其失效
-    const decoded = await tokenKit().verifyToken(token)
-    // TODO: 将 token 加入黑名单或者其他使其失效的方式
+    // 删除客户端 cookies
+    res.clearCookie(TOKEN.tokenCookiesKey)
     res.sendResponse({
       msg: '注销成功',
       data: null
     })
   } catch (error) {
     res.sendError({
-      code: 400,
+      code: codeEnums.BadRequest,
       msg: '注销失败',
       data: error
     })

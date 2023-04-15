@@ -6,7 +6,7 @@
 
 const { TOKEN } = require('@config')
 const tokenKit = require('@plugins/token')
-const { codeEnums, codeMsgEnums, tokenCodeMsgEnums, tokenCodeEnums } = require('@enums/response.js')
+const { codeEnums, tokenCodeMsgEnums, tokenCodeEnums } = require('@enums/response.js')
 
 /**
  * 以下是一些常见的标准的 token 错误码：
@@ -30,17 +30,15 @@ const tokenAuth = async (req, res, next) => {
     const token = req.headers.authorization
     if (!token) {
       return res.sendError({
-        code: tokenCodeEnums.InvalidToken,
-        msg: tokenCodeMsgEnums[tokenCodeEnums.InvalidToken]
+        code: tokenCodeEnums.Unauthorized,
+        msg: tokenCodeMsgEnums[tokenCodeEnums.Unauthorized]
       })
     }
 
     try {
       const decoded = await tokenKit().verifyToken(token)
-      console.log('解析的用户信息===', req.path, decoded)
       if (decoded.code === codeEnums.OK) {
         // 将用户信息存储到请求对象中
-        console.log('鉴权成功')
         req.user = decoded.data
         next()
       } else {
@@ -58,7 +56,6 @@ const tokenAuth = async (req, res, next) => {
     }
   } else {
     // 白名单域名
-    console.log('====白名单域名:', req.path)
     next()
   }
 }
