@@ -19,7 +19,11 @@ const project_list = async (req, res, next) => {
   try {
     let { page, limit } = req.getReqParams()
     let { data, count } = await projectServ.getProjectList({ page, limit })
-
+    const { id } = req.user
+    data.forEach(pro => {
+      // 新增字段：created 表示是否为当前用户创建的项目
+      pro.created = Number(pro.createUserId) === Number(id)
+    })
     return res.sendResponse({
       data,
       params: {
@@ -80,7 +84,7 @@ const project_delete = async (req, res, next) => {
       })
     }
     let { ids } = req.getReqParams()
-    await projectServ.delProject({ids})
+    await projectServ.delProject({ ids })
     return res.sendResponse()
   } catch (error) {
     return res.sendError({

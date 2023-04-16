@@ -6,5 +6,5 @@ module.exports = {
   tokenExpMinutes: 120 * 60 * 1000, //JWT有效期(分钟=默认120)
   tokenCookiesKey: 'LowCodeToken', // token cookies key
   tokenStartsWithStr: 'local-code-node ', //token 前缀
-  tokenAuthWhiteList: ['/goview/sys/login', '/goview/sys/getOssInfo'] // token 验证白名单路路由
+  tokenAuthWhiteList: ['/goview/sys/login', '/goview/sys/getOssInfo','/goview/sys/regsiter'] // token 验证白名单路路由
 }
