@@ -80,7 +80,7 @@ const project_delete = async (req, res, next) => {
       })
     }
     let { ids } = req.getReqParams()
-    await projectServ.delProject(ids)
+    await projectServ.delProject({ids})
     return res.sendResponse()
   } catch (error) {
     return res.sendError({
