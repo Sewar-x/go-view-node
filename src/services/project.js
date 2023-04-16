@@ -65,27 +65,33 @@ const setProjectUpsert = async params => {
   return data
 }
 
+/**
+ * 删除项目
+ * @param { Array } id 项目id
+ * @returns
+ */
+const delProject = async ({ ids = null }) => {
+  let ok = true
+  let transaction = null
+  if (!ids) {
+    return false
+  }
+  try {
+    transaction = await sequelize.transaction()
+    await Projectdatas.destroy({ where: { projectId: ids }, transaction: transaction })
+    await Projects.destroy({ where: { id: ids }, transaction: transaction })
+    await transaction.commit()
+  } catch (err) {
+    ok = false
+    if (transaction) await transaction.rollback()
+  }
+  return ok
+}
+
 const getProjectsById = async id => {
   let data = {}
   data = await Projects.findOne({ where: { id: id }, raw: true })
   return data
-}
-const project_delete = async id => {
-  let ok = true
-
-  let transaction
-  try {
-    transaction = await sequelize.transaction()
-    await Projectdatas.destroy({ where: { projectId: id }, transaction: transaction })
-    await Projects.destroy({ where: { id: id }, transaction: transaction })
-    await transaction.commit()
-  } catch (err) {
-    ok = false
-    console.log('project_delete failed due to DB error', err)
-    if (transaction) await transaction.rollback()
-  } finally {
-  }
-  return ok
 }
 
 const getProjectdatasById = async id => {
@@ -145,7 +151,7 @@ module.exports = {
   getProjectdatasByProjectId,
   getProjectList,
   setProjectUpsert,
-  project_delete,
+  delProject,
   project_publish,
   project_data_save
 }

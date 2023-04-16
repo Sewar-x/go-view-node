@@ -8,9 +8,16 @@ const moment = require('moment')
 const projectServ = require('@services/project')
 const File = require('@utils/File')
 
+/**
+ * 获取项目列表
+ * @param {*} req
+ * @param {*} res
+ * @param {*} next
+ * @returns
+ */
 const project_list = async (req, res, next) => {
   try {
-    let { page, limit } = req.getParams()
+    let { page, limit } = req.getReqParams()
     let { data, count } = await projectServ.getProjectList({ page, limit })
 
     return res.sendResponse({
@@ -20,6 +27,61 @@ const project_list = async (req, res, next) => {
         limit: Number(limit)
       }
     })
+  } catch (error) {
+    return res.sendError({
+      data: error
+    })
+  }
+}
+
+/**
+ * 创建项目
+ * @param {*} req
+ * @param {*} res
+ * @param {*} next
+ * @returns
+ */
+const project_create = async (req, res, next) => {
+  try {
+    let data = await projectServ.setProjectUpsert({
+      project: req.getReqParams(),
+      user: req.user
+    })
+    return res.sendResponse({
+      data
+    })
+  } catch (error) {
+    return res.sendError({
+      data: error
+    })
+  }
+}
+
+/**
+ * 删除项目
+ * @param {*} req
+ * @param {*} res
+ * @param {*} next
+ * @returns
+ */
+const project_delete = async (req, res, next) => {
+  try {
+    //请求参数校验规则
+    const reqRule = [
+      {
+        key: 'ids',
+        required: true
+      }
+    ]
+    const errors = req.validateReqParams(reqRule)
+    if (errors.length > 0) {
+      return res.sendError({
+        data: errors[0]
+      })
+    }
+    let { ids } = req.getReqParams()
+    await projectServ.delProject(ids)
+    return res.sendResponse()
   } catch (error) {
     return res.sendError({
       data: error
@@ -52,55 +114,14 @@ const project_by_id = async (req, res, next) => {
   return res.json(res_data)
 }
 
-/**
- * 创建项目
- * @param {*} req 
- * @param {*} res 
- * @param {*} next 
- * @returns 
- */
-const project_create = async (req, res, next) => {
-  try {
-    let data = await projectServ.setProjectUpsert({
-      project:req.getParams(),
-      user: req.user
-    })
-    return res.sendResponse({
-      data
-    })
-  } catch (error) {
-    return res.sendError({
-      data: error
-    })
-  }
-}
-
 // 修改项目
 const project_edit = async (req, res, next) => {
   let _m = req.method
   let res_data = { code: 0, msg: '' }
   try {
-
     let { id, indexImage, projectName, remarks } = req.body
     let ok = await projectServ.setProjectUpsert(req.body)
 
-    res_data.msg = '操作成功'
-    res_data.code = 200
-  } catch (error) {
-    res_data.code = 500
-    res_data.msg = error
-  }
-  return res.json(res_data)
-}
-
-// 删除项目
-const project_delete = async (req, res, next) => {
-  let _m = req.method
-  let res_data = { code: 0, msg: '' }
-  try {
-    let { ids } = req.query
-    console.log('project_delete ids: ', ids)
-    let ok = await projectServ.project_delete(ids)
     res_data.msg = '操作成功'
     res_data.code = 200
   } catch (error) {

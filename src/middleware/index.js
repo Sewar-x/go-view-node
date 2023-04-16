@@ -2,10 +2,9 @@ const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 const static = require('./static.js')
 const cors = require('./cors.js')
-const responseFormatter = require('./responseFormatter.js')
 const errorHandlers = require('./error.js')
 const authHandlers = require('./auth.js')
-const paramsMiddleware = require('./requestParams.js')
+const httpFunc = require('./httpFunc.js')
 const { loggerMiddleware } = require('./logger.js')
 const { SYSTEM } = require('@config/index.js')
 
@@ -20,9 +19,8 @@ module.exports = app => {
   // 静态资源中间件
   app.use(SYSTEM.STATIC, static)
   app.use(cookieParser())
-  app.use(paramsMiddleware)
+  app.use(httpFunc)
   app.use(loggerMiddleware)
-  app.use(responseFormatter)
   app.use(authHandlers)
   //Express 中间件是按顺序执行的。您应该在所有其他中间件之后，最后定义错误处理程序。否则，您的错误处理程序将不会被调用
   app.use(errorHandlers)

@@ -10,7 +10,7 @@ const { codeEnums } = require('@enums/response.js')
 
 const regsiter = async (req, res, next) => {
   try {
-    let { username, password } = req.getParams()
+    let { username, password } = req.getReqParams()
     const schema = new passwordValidator()
     const validMsg = {
       min: '长度必须至少为8个字符',
@@ -78,7 +78,7 @@ const regsiter = async (req, res, next) => {
  */
 const login = async (req, res, next) => {
   try {
-    let { username, password } = req.getParams()
+    let { username, password } = req.getReqParams()
     let user = await Users.findOne({ where: { username: username }, raw: true })
     if (!user) {
       return res.sendError({
