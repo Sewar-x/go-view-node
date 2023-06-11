@@ -1,11 +1,17 @@
 /**
- * 文件路径解析中间件，将文件路径转为对象
+ * 文件路径解析中间件，将文件路径转为对象，将文件内容挂载到 app 实例对象，便于获取文件上下文
  * 将 controllers 中的文件位置映射为应用对象
  */
 
 const Path = require('path')
 const fs = require('fs')
 
+/**
+ * 获取指定文件路径下的所有文件
+ * @param {*} path 文件夹路径
+ * @param {*} content 文件内容
+ * @param {*} onlyIndexFiles 是否仅仅获取 index 文件
+ */
 const getFiles = (path, content, onlyIndexFiles) => {
   //readdirSync: 方法将返回一个包含“指定目录下所有文件名称”的数组对象。
   //extname: 返回path路径文件扩展名，如果path以 ‘.' 为结尾，将返回 ‘.'，如果无扩展名 又 不以'.'结尾，将返回空值。

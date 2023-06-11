@@ -1,5 +1,12 @@
 'use strict'
 
+
+/**
+ * ==================================================
+ *  token 方法插件封装
+ * ==================================================
+ */
+
 const jwt = require('jsonwebtoken')
 const { TOKEN, APP } = require('@config')
 const { codeEnums, codeMsgEnums, tokenCodeMsgEnums, tokenCodeEnums } = require('@enums/response.js')

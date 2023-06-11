@@ -1,7 +1,9 @@
 /**
+ * =====================================================
  * 校验客户端请求token中间件,处理检查请求头部token是否正确
  * 文档：https://www.npmjs.com/package/jsonwebtoken
  * 参考资料：https://segmentfault.com/a/1190000015255975
+ * =====================================================
  */
 
 const { TOKEN } = require('@config')

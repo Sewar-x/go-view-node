@@ -1,7 +1,10 @@
 /** 
+ * =========================================
  * CORS : 跨域资源共享
  * doc: https://www.npmjs.com/package/cors
+ * ==========================================
  **/
+
 const cors = require('cors')
 const { APP } = require('@config')
 const corsOptions = {
