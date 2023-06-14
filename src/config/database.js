@@ -1,8 +1,9 @@
 /**
- * ================数据库配置============================
+ * ============================================
+ * 数据库配置
+ * ============================================
  */
-const utils = require('@plugins/db/sequelize')
-const { DEBUG } = require('./system')
+const utils = require('@plugins/db/sequelizeUtils.js')
 const DB = {
   DB_HOST: '127.0.0.1',
   DB_PORT: 3306,
@@ -53,8 +54,7 @@ module.exports = {
       hooks: {
         afterFind: async (result, options, fn) => {
           if (FMT_ROWS_DATE) {
-            let res = await utils.fmtFun(result)
-            return res
+            return await utils.fmtFun(result)
           } else return result
         }
       },
