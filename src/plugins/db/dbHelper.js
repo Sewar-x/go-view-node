@@ -1,8 +1,10 @@
 'use strict'
-
+/**
+ * =================================================
+ *  数据库查询相关方法封装
+ * =================================================
+ */
 const { sqlStateEnums, sqlTypeEnums, sqlEnums } = require('@enums/sql')
-
-
 
 class DbHelper {
   constructor(sequelize) {
@@ -78,7 +80,7 @@ class DbHelper {
         res = await this.sequelize.query(sql, { multipleStatements: true, type: this.QueryTypes.SELECT }).then(splitResult)
       }
       else if (this.dbType == sqlEnums.mssql) {
-        var sql_list = sql.split(';')
+        let sql_list = sql.split(';')
         let id = 0
         let _list = []
         for (let i = 0; i < sql_list.length; i++) {
@@ -343,14 +345,21 @@ class DbHelper {
 
 
 
-
+  /**
+   * 使用 Sequelize ORM 实现的批量 UPSERT 操作的函数，可以将一组数据插入到数据库中，如果数据已经存在，则更新相应的记录。
+   * @param {*} model 
+   * @param {*} key 
+   * @param {*} values 
+   * @returns 
+   */
   async bulkUpsert(model, key, values) {
+    // 定义一个名为 _find 的内部函数，用于根据条件查找数据库中的记录
     function _find(where) {
       return model.findOne({
         where
       })
     }
-
+    // 定义一个名为 _update 的内部函数，用于更新数据库中的记录
     function _update(value, where) {
       return model
         .update(value, {
@@ -358,6 +367,7 @@ class DbHelper {
         })
         .then(() => _find(where))
     }
+    // 遍历所有的数据，为每个数据执行 findOrCreate 操作
     let promises = values.map(value => {
       let where = {
         [key]: value[key]
@@ -399,8 +409,8 @@ const splitResult = arr => {
   for (let i = 0; i < arr.length; i++) {
     // 单个结果集 对象
     let one_set = arr[i]
-    var one_set_keys = Object.keys(one_set)
-    var tmp = []
+    let one_set_keys = Object.keys(one_set)
+    let tmp = []
     for (let key in one_set_keys) {
       let row = one_set[key]
       tmp.push(row)
@@ -436,14 +446,6 @@ const switchValType = (val, type = sqlTypeEnums.int) => {
 
 
 
-
-const strDo = async str => {
-  str = str.replace(/\(/, ' ')
-  str = str.replace(/\)/, ' ')
-  str = str.replace(/\</, '(')
-  str = str.replace(/\>/, ')')
-  return str
-}
 
 module.exports = sequelize => {
   return new DbHelper(sequelize)
