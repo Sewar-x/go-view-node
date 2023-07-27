@@ -124,6 +124,7 @@ const project_edit = async (req, res, next) => {
   let res_data = { code: 0, msg: '' }
   try {
     let { id, indexImage, projectName, remarks } = req.body
+   
     let ok = await projectServ.setProjectUpsert(req.body)
 
     res_data.msg = '操作成功'

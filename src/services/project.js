@@ -25,7 +25,7 @@ const getProjectList = async ({ page, limit }) => {
       res.count = tmp.count
       res.data = tmp.rows
     }
-  } catch (error) {}
+  } catch (error) { }
   return res
 }
 
@@ -42,22 +42,34 @@ const getProjectList = async ({ page, limit }) => {
 const setProjectUpsert = async params => {
   let data = {}
   try {
-    let _params = {}
-    let { projectName, indexImage, remarks } = params.project
-    _params = { projectName, indexImage, remarks }
+    let { projectName, indexImage, remarks } = params
+
     if (params.hasOwnProperty('id')) {
       //判断是否有项目 id，存在更新
       let id = params.id
       data = await Projects.findOne({ where: { id: id }, raw: true })
       if (data) {
         //存在项目，更新数据
-        await Projects.update(_params, { where: { id: id } })
+        await Projects.update({ projectName, indexImage, remarks }, { where: { id: id } })
         data = await Projects.findOne({ where: { id: id }, raw: true })
       }
     } else {
       //不存在项目 id，创建项目
-      _params = { createUserId: params?.user?.id, projectName, indexImage, remarks, state: -1, isDelete: -1, createTime: new Date() }
-      data = await Projects.create(_params, { returning: true, raw: true })
+        data = await Projects.create(
+          { 
+            createUserId: params?.user?.id,
+            projectName, 
+            indexImage, 
+            remarks, 
+            state: -1, 
+            isDelete: -1, 
+            createTime: new Date() 
+          },
+          { 
+            returning: true, 
+            raw: true 
+          }
+        )
     }
   } catch (err) {
     return err
