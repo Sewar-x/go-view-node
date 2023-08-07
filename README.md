@@ -39,6 +39,16 @@ npm run pm2
 npm run sqlserver
 ```
 
+### 使用 PM2 部署
+* 服务器安装 Node 
+* `  `
+* 安装 PM2
+* ` npm install -g pm2 `
+* 使用 pm2 的自动部署上传项目
+* ` npm install //安装依赖
+    pm2 deploy ecosystem.config.js production // 部署生产环境
+  `
+
 ### 项目结构
 ```
 .

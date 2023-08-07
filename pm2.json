@@ -1,10 +1,10 @@
 {
   "apps": [
     {
-      "name": "LedApi",
+      "name": "low-code-node",
       "script": "./src/server.js",
       "instances": 1,
-      "exec_mode": "cluster",
+      "exec_mode": "fork",
       "log_date_format": "YYYY-MM-DD HH:mm Z",
       "watch": true,
       "ignore_watch": ["node_modules", "logs"],
@@ -14,7 +14,7 @@
       "pid_file": "./logs/pm2/project_api.pid",
       "error_file": "./logs/pm2/project_api_err.log",
       "env": {
-        "NODE_ENV": "prod",
+        "NODE_ENV": "production",
         "logging": "on"
       }
     }
