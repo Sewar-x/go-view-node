@@ -80,6 +80,7 @@ const login = async (req, res, next) => {
   try {
     let { username, password } = req.getReqParams()
     let user = await Users.findOne({ where: { username: username }, raw: true })
+  
     if (!user) {
       return res.sendError({
         msg: `未找到对应的用户 ${username}，请核查！`
@@ -127,6 +128,7 @@ const login = async (req, res, next) => {
       data: userData
     })
   } catch (error) {
+    console.error(error)
     res.sendError({
       code: 500,
       msg: error,

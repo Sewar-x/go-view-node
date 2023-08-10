@@ -3,7 +3,7 @@
  * token 配置
  * ===========================================
  */
-module.exports = {
+ module.exports = {
   sessionExpiresIn: '24h',
   tokenExpMinutes: 120 * 60 * 1000, //JWT有效期(分钟=默认120)
   tokenCookiesKey: 'LowCodeToken', // token cookies key
