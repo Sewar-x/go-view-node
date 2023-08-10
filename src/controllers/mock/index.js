@@ -84,9 +84,10 @@ const getPieChart = async (req, res, next) => {
 const getRadarChart = async (req, res, next) => {
     try {
         console.log('==== Mock 接口 - 雷达图 ===')
-        const mockData = { 
+        const mockData = {
             "radarIndicator": [{ "name": "沟通能力", "max": 650 }, { "name": "协作能力", "max": 1600 }, { "name": "编码能力", "max": 3000 }, { "name": "系统设计能力", "max": 3800 }, { "name": "管理能力", "max": 5200 }, { "name": "学习能力", "max": 2500 }],
-            "seriesData": [{ "name": "张三", "value": [200,1200, 1380, 1260,3205, 1805] }, { "name": "李四", "value": [500, 1400, 2800, 2600, 4200, 2100] }] }
+            "seriesData": [{ "name": "张三", "value": [200, 1200, 1380, 1260, 3205, 1805] }, { "name": "李四", "value": [500, 1400, 2800, 2600, 4200, 2100] }]
+        }
         res.sendResponse({
             msg: '操作成功',
             data: mockData
@@ -100,10 +101,44 @@ const getRadarChart = async (req, res, next) => {
     }
 }
 
+/**
+ * Mock 接口 - 动态表格
+ */
+const getTableData = async (req, res, next) => {
+    try {
+        console.log('==== Mock 接口 - 雷达图 ===')
+        const mockData = [
+            ["TVY23-A-0030", "12", "11", "13"],
+            ["TVY23-A-0031", "12", "11", "13"],
+            ["TVY23-A-0031", "12", "11", "13"],
+            ["TVY23-A-0031", "12", "11", "13"],
+            ["TVY23-A-0031", "12", "11", "13"],
+            ["TVY23-A-0031", "12", "11", "13"],
+            ["TVY23-A-0031", "12", "11", "13"],
+            ["TVY23-A-0031", "12", "11", "13"],
+            ["TVY23-A-0031", "12", "11", "13"],
+            ["TVY23-A-0032", "12", "11", "13"]
+        ]
+
+        res.sendResponse({
+            msg: '操作成功',
+            data: mockData
+        })
+    } catch (error) {
+        res.sendError({
+            code: 500,
+            msg: error,
+            data: error
+        })
+    }
+}
+
+
 module.exports = {
     getBarChart,
     getLineChart,
     getRankChart,
     getPieChart,
-    getRadarChart
+    getRadarChart,
+    getTableData
 }

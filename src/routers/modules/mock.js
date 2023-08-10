@@ -6,5 +6,6 @@ module.exports = (app, router) => {
     router.get('/api/goview/mock/getRankChart', app.controllers.mock.getRankChart);
     router.get('/api/goview/mock/getPieChart', app.controllers.mock.getPieChart);
     router.get('/api/goview/mock/getRadarChart', app.controllers.mock.getRadarChart);
+    router.get('/api/goview/mock/getTableData', app.controllers.mock.getTableData);
     return router
 }

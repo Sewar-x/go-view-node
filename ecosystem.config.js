@@ -24,7 +24,8 @@ module.exports = {
   deploy: {
     //生产环境的部署，部署的方式以deploy的key作为区分
     production: {
-      user: 'root', //服务器用户名                                                             
+      key: "", // 指定 SSH 密钥,带有公钥路径的“key”属性
+      user: 'root', // 权限验证用户名                                                       
       host: '', //服务器ip地址
       ref: '', //需要拉取的仓库分支
       repo: '', //仓库地址
@@ -36,6 +37,7 @@ module.exports = {
     },
     //测试环境的部署，部署的方式以deploy的key作为区分
     test: {
+      key: "", // 指定 SSH 密钥,带有公钥路径的“key”属性
       user: 'root', //服务器用户名  
       host: '10.208.45.61',//服务器ip地址
       ref: '',//需要拉取的仓库分支
