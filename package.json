@@ -10,8 +10,8 @@
     "prod": "cross-env NODE_ENV=production node ./src/server.js",
     "test": "cross-env NODE_ENV=test nodemon ./src/server.js",
     "sqlserver": "cross-env NODE_ENV=test node ./src/server.js",
-    "pm2:test": "pm2 start pm2.json --env test",
-    "pm2:prod": "pm2 start pm2.json --env production"
+    "pm2:test": "pm2-runtime start pm2.json --env test",
+    "pm2:prod": "pm2-runtime start pm2.json --env production"
   },
   "keywords": [],
   "license": "ISC",

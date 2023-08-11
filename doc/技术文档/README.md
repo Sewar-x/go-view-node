@@ -16,3 +16,12 @@
 |          |                        |                                                              |
 | 数据库   | Sequelize              | Node.js [ORM](https://en.wikipedia.org/wiki/Object-relational_mapping) |
 
+
+
+## docker 
+### 构建 doker 镜像
+* 构建 docker 镜像: `docker image build -t low-code-node .`
+* 构建容器： ` docker container run -d -p 9991:9991 -it low-code-node /bin/bash `
+
+## CI/CD自动化部署
+* 目标： 通过 git 推送指定分支代码到 gitee 仓库后，gitee 通过 wehook 推送到程序中，然后服务拉取最新代码，并重新启动服务

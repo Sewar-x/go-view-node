@@ -2,14 +2,14 @@
 // 是否开启结果集格式化
 const FMT_ROWS_DATE = false
 const DB = {
-    DB_HOST: '127.0.0.1',
+    DB_HOST: '10.118.1.89',
     DB_PORT: 3306,
-    DB_NAME: 'low-code',
-    DB_USER: 'root',
-    DB_PWD: 'root',
+    DB_NAME: 'low_code',
+    DB_USER: 'xuwen',
+    DB_PWD: 'xuwen.20230810#',
     DATABASE: 'mysql',
     KNEX_CLIENT: 'mysql2',
-    CHARSET: 'utf8mb4',
+    CHARSET: 'utf8',
     TIMEZONE: '+08:00'
 }
 

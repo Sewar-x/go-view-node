@@ -14,6 +14,14 @@
       "pid_file": "./logs/pm2/project_api.pid",
       "error_file": "./logs/pm2/project_api_err.log",
       "env": {
+        "NODE_ENV": "development",
+        "logging": "off"
+      },
+      "env_test": {
+        "NODE_ENV": "test",
+        "logging": "off"
+      },
+      "env_production": {
         "NODE_ENV": "production",
         "logging": "on"
       }

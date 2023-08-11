@@ -13,13 +13,18 @@ const { Sequelize, DataTypes } = require('sequelize')
 class DB {
   //构造函数
   constructor({ database, sequelizeConfig, knexConfig, logging, DEBUG = true }) {
-    //创建一个sequelize实例
-    this.sequelize = new Sequelize(sequelizeConfig.database, sequelizeConfig.username, sequelizeConfig.password, sequelizeConfig.connect, {
-      // 控制台输出查询日志
-      logging: logging.info,
-      // 事务隔离级别：可串行化(Serializable)
-      isolationLevel: Sequelize.Transaction.ISOLATION_LEVELS.SERIALIZABLE
-    })
+    try {
+      //创建一个sequelize实例
+      this.sequelize = new Sequelize(sequelizeConfig.database, sequelizeConfig.username, sequelizeConfig.password, sequelizeConfig.connect, {
+        // 控制台输出查询日志
+        logging: logging.info,
+        // 事务隔离级别：可串行化(Serializable)
+        isolationLevel: Sequelize.Transaction.ISOLATION_LEVELS.SERIALIZABLE
+      })
+    } catch (err) {
+      console.error(err)
+    }
+
     this.tabs = []
     this.models = {}
     this.dbType = database.DATABASE
