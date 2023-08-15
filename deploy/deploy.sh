@@ -26,8 +26,6 @@ git pull "$remote" "$branch"
 # 检查拉取是否成功
 if [ $? -eq 0 ]; then
   echo "远程仓库同步成功."
-  pm2 stop all 
-  npm run pm2:prod
 else
   echo "远程仓库同步失败."
 fi
