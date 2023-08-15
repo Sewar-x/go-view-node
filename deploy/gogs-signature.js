@@ -1,0 +1,2 @@
+const signature = '509271214996d15181d8d3b50d242ed532e13b39cd1bf3a47cd0306afb8f71ea'
+module.exports = signature
