@@ -11,10 +11,10 @@ const webhook = async (req, res, next) => {
     try {
 
         if (!verify_signature(req)) {
-            console.log('===签名错误===')
+            console.log('===webhook 签名错误===')
             res.sendError({
                 code: 500,
-                msg: '签名错误',
+                msg: 'webhook 签名错误',
                 data: null
             })
             return false
