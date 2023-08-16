@@ -21,7 +21,6 @@ const verify_signature = (req) => {
         X-Gogs-Signature: ${gogsSignature}
         ${payload}`;
 
-        console.log("🚀 ~dataToSign ===", dataToSign)
         // 更新要计算哈希值的文本
         hmac.update(dataToSign);
 
