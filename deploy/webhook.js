@@ -11,7 +11,7 @@ const webhook = async (req, res, next) => {
     try {
 
         if (!verify_signature(req)) {
-            console.log('===webhook 签名错误===')
+           
             res.sendError({
                 code: 500,
                 msg: 'webhook 签名错误',
