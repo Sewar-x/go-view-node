@@ -56,7 +56,7 @@ docker container run -d -p 9991:9991 -it low-code-node /bin/bash
 
 * 打包镜像
 ```
-docker save low-code-node > lowcodenode.tar.gz
+docker save  low-code-node > ./package/lowcode.tar
 ```
 注意：使用 docker save  打包后的包默认放入当前执行目录下    
 
