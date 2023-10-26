@@ -24,6 +24,7 @@ echo "同步修改..."
 git pull "$remote" "$branch"
 
 echo "docker 构建镜像..."
+nvm use 14.17.5
 docker image build -t low-code-node .
 
 echo "docker 保存镜像..."

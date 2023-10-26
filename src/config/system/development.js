@@ -11,7 +11,7 @@
    PUBLICPATH: '/public', // 静态资源目录
    OOS_PATH: '/api/goview/project/getImages/', // OSS 上传路径
    OSS_BUCKETNAME: 'getuserphoto',
-   CORS_WHITElIST: [`http://localhost:${app.PORT}`,'http://10.126.16.116:9991'],
+   CORS_WHITElIST: [`http://localhost:${app.PORT}`,'http://10.126.16.116:9991','http://10.126.16.116:8080/'],
    DEBUG: true
  }
  

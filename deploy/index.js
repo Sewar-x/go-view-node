@@ -1,6 +1,6 @@
 const FtpDeploy = require("ftp-deploy");
 const ftpDeploy = new FtpDeploy();
-const DeployConfig = require("./config.ts");
+const DeployConfig = require("./config.js");
 
 /**
  * 上传文件函数
