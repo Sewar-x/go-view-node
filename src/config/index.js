@@ -24,6 +24,5 @@ getFiles({
   getFilesCallBack: getJsFiles
 })
 
-console.log('==configure==', configure)
 global.config = configure
 module.exports = configure

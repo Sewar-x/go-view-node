@@ -6,9 +6,15 @@
  **/
 
 const cors = require('cors')
-const { APP } = require('@config')
+const { SYSTEM } = require('@config')
 const corsOptions = {
   //可以从 http://localhost 访问该API，并禁止其他域使用
-  origin: `http://localhost:${APP.PORT}`
+  origin:function (origin, callback) {
+    if (SYSTEM.CORS_WHITElIST.indexOf(origin) !== -1) {
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed by CORS'))
+    }
+  } 
 }
 module.exports = cors(corsOptions)

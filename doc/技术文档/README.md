@@ -13,10 +13,6 @@
 * 文件上传
 * 自动部署
 
-
-
-
-
 ### 安装
 
 ```shell
@@ -45,85 +41,87 @@ npm run pm2:prod
 npm run sqlserver
 ```
 
+### 部署发布
+
+
+* 使用命令构建 docker 镜像:
+```
+docker image build -t low-code-node .
+```
+
+* 构建容器：
+```
+docker container run -d -p 9991:9991 -it low-code-node /bin/bash
+```
+
+* 打包镜像
+```
+docker save low-code-node > lowcodenode.tar.gz
+```
+注意：使用 docker save  打包后的包默认放入当前执行目录下    
+
 #### 使用 PM2 部署
 
 * 安装 PM2
 * ` npm install -g pm2 `
 * 使用 pm2 的自动部署上传项目
 * `pm2 start pm2.json`
-  `
 
 ## 技术栈
 
-| 技术     | 技术栈                 | 作用                                                         |
-| -------- | ---------------------- | ------------------------------------------------------------ |
-| 开发语言 | Node.js                |                                                              |
-|          |                        |                                                              |
-| 框架     | express 4.x            |                                                              |
-|          |                        |                                                              |
-|          | express.static         | 静态文件服务                                                 |
-| 中间件   | body-parser            | 解析 HTTP 请求的请求体                                       |
-|          | cookie-parse           | 解析 HTTP 请求中的 cookie                                    |
-|          | log4js                 | 日志管理模块                                                 |
-|          |                        |                                                              |
-| 插件     | pathParse.js（自定义） | 获取文件夹路径下所有文件对象挂载到 app 实例对象              |
-|          | token.js               |                                                              |
-|          |                        |                                                              |
-| 数据库   | Sequelize              | Node.js [ORM](https://en.wikipedia.org/wiki/Object-relational_mapping) |
-|          |                        |                                                              |
-| 自动部署 | pm2                    | [进程管理]()                                                 |
+| 技术         | 技术栈                                                       | 作用                                            |
+| ------------ | ------------------------------------------------------------ | ----------------------------------------------- |
+| 开发语言     | Node.js                                                      |                                                 |
+|              |                                                              |                                                 |
+| 框架         | express 4.x                                                  |                                                 |
+|              |                                                              |                                                 |
+|              | express.static                                               | 静态文件服务                                    |
+| 中间件       | body-parser                                                  | 解析 HTTP 请求的请求体                          |
+|              | cookie-parse                                                 | 解析 HTTP 请求中的 cookie                       |
+|              | log4js                                                       | 日志管理模块                                    |
+|              |                                                              |                                                 |
+| 插件         | pathParse.js（自定义）                                       | 获取文件夹路径下所有文件对象挂载到 app 实例对象 |
+|              | token.js                                                     |                                                 |
+|              |                                                              |                                                 |
+| 数据库       | MySql                                                        |                                                 |
+|              |                                                              |                                                 |
+| Node.js  ORM | [Sequelize](https://en.wikipedia.org/wiki/Object-relational_mapping) |                                                 |
+|              |                                                              |                                                 |
+| 进程管理     | [pm2](https://pm2.fenxianglu.cn/docs/start/#google_vignette) |                                                 |
+|              |                                                              |                                                 |
+| 容器         | docker                                                       |                                                 |
 
 
 
 ### 项目结构
 
-\```
-
+```
 ├── README.en.md
-
 ├── README.md
-
 ├── db
-
 │  └── mysql.sql  针对mysql数据需要的表结构
-
 ├── package.json   package文件
-
 ├── server.js    服务启动文件
-
 ├── src
-
 │  ├── config    配置文件
-
 │  ├── controllers 控制器
-
 │  ├── models    model层
-
 │  ├── routers   路由
-
 │  ├── services   数据库操作
-
 │  └── utils    工具类
-
 └── tmp       文件上传临时目录
-
   └── upload/tmp
-
-\```
+```
 
 
 
 ### 数据库
-
-
 
 #### 数据库脚本参考
 
 * mysql [db/mysql.sql](db/mysql.sql)
 
 * sqlserver [db/sqlserver.sql](db/sqlserver.sql)
-
-
 
 #### 业务API配置，在数据库表api中定义
 
