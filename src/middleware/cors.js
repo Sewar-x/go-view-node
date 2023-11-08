@@ -8,7 +8,8 @@
 const cors = require('cors')
 const { SYSTEM } = require('@config')
 const corsOptions = {
-  origin: SYSTEM.CORS_WHITElIST.join(',')
+  origin: "*",
+  credentials: true
 };
 
 module.exports = cors(corsOptions)
