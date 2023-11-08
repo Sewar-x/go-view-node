@@ -1,37 +1,5 @@
 // const OUTPUT_DIR = require("../build/constant.ts").OUTPUT_DIR;
 const path = require('path')
-const inquirer = require('inquirer');
-
-async function getInput() {
-  const info = {
-    user: null,
-    password: null
-  }
-  await inquirer
-    .prompt([
-      {
-        type: 'input',
-        name: 'user',
-        message: '请输入用户名,按回车确认：',
-        validate: function (val) {
-          return val ? true : "请输入非空字符串";
-        }
-      },
-      {
-        type: 'input',
-        name: 'password',
-        message: '请输入密码,按回车确认：',
-        validate: function (val) {
-          return val ? true : "请输入非空字符串";
-        }
-      }
-    ])
-    .then((answers) => {
-      info.user = answers.user
-      info.password = answers.password
-    })
-  return info
-}
 
 //获取上传配置信息
 const getConfig = async function () {
@@ -44,10 +12,6 @@ const getConfig = async function () {
     users = require("./users.js");
   } catch (err) {
     console.log('用户信息文件不存在 ', err)
-  } finally {
-    if (!users.user || !users.password) {
-      users = await getInput()
-    }
   }
 
   return {
@@ -63,8 +27,8 @@ const getConfig = async function () {
     },
     localRoot: path.resolve(__dirname, `../package`),
     remoteRoot: {// 远程静态资源文件路径
-      test: '/lowcode',
-      production: '/lowcode'
+      test: '/lowcode/package',
+      production: '/lowcode/package'
     }
   };
 }
