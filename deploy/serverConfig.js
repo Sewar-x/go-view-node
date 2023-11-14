@@ -1,3 +1,8 @@
+/**
+ * ===========================
+ *  ftp 文件上传配置
+ * ===========================
+ */
 // const OUTPUT_DIR = require("../build/constant.ts").OUTPUT_DIR;
 const path = require('path')
 

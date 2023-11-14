@@ -12,10 +12,10 @@
     "sqlserver": "cross-env NODE_ENV=test node ./src/server.js",
     "pm2:test": "pm2-runtime start pm2.json --env test",
     "pm2:prod": "pm2-runtime start pm2.json --env production",
-    "upload:test": "cross-env NODE_ENV=test && node ./deploy/index.js",
-    "upload:prod": "cross-env NODE_ENV=production && node ./deploy/index.js",
-    "deploy:test": "cross-env NODE_ENV=test && sh ./deploy/deploy.sh",
-    "deploy:prod": "cross-env NODE_ENV=production && sh ./deploy/deploy.sh"
+    "upload:test": "cross-env NODE_ENV=test && node ./deploy/upload.js",
+    "upload:prod": "cross-env NODE_ENV=production && node ./deploy/upload.js",
+    "deploy:test": "cross-env NODE_ENV=test && node ./deploy/index.js",
+    "deploy:prod": "cross-env NODE_ENV=production && node ./deploy/index.js"
   },
   "keywords": [],
   "license": "ISC",
