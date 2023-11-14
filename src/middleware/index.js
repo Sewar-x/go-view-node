@@ -4,6 +4,7 @@ const static = require('./static.js')
 const cors = require('./cors.js')
 const errorHandlers = require('./error.js')
 const authHandlers = require('./auth.js')
+const axiosPlugin = require('./axios.js')
 const httpFunc = require('./httpFunc.js')
 const { loggerMiddleware } = require('./logger.js')
 const { SYSTEM } = require('@config/index.js')
@@ -22,6 +23,8 @@ module.exports = app => {
   app.use(cookieParser())
   //  请求响应参数格式化中间件，在 req 请求对象中挂载请求相关方法 
   app.use(httpFunc)
+  // axios 中间件
+  app.use(axiosPlugin)
   // 日志管理模块
   app.use(loggerMiddleware)
   // 校验客户端请求token中间件,处理检查请求头部token是否正确
