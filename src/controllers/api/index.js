@@ -5,11 +5,15 @@ const srv_api = require('@services/srv_api')
 const Obj = require('@utils/Obj')
 const Res = require('@utils/Res')
 const util = require('util')
-const { api } =db
+const { api } = db
 
-// http://localhost:4444/api/getDataByApiId?apiId=1&line=123
-// http://localhost:4444/api/getDataByApiId?restype=datagrid&apiId=1&line=123
-// http://localhost:4444/api/getDataByApiId?restype=amis&apiId=fd90f130-5ab7-11eb-be62-1546eb46c3e&company_id=287dd530-48d2-11ec-8d5c-0b6836c43e8a&plant_id=LT&line=LT_LINE1&station_no=&rows=10&page=1
+/**
+ * 根据id获取 api 接口
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ * @returns 
+ */
 const getDataByApiId = async (req, res, next) => {
 	let data = {}
 	let _m = req.method
@@ -23,17 +27,22 @@ const getDataByApiId = async (req, res, next) => {
 	let apiId = _query.apiId
 	if (!apiId) {
 		data = await getDefaultVal(_query.restype)
-		data.msg = '未传递apiId参数！'
-		data.code = -1
-		return res.json(data)
+		return res.sendResponse({
+			code: -1,
+			data,
+			msg: '未传递apiId参数！'
+		})
 	} else {
-		data.msg = ''
-		data.code = 0
+		data = await getDataApiId(_query)
+		return res.sendResponse(data)
 	}
-	data = await getDataApiId(_query)
-	return res.json(data)
 }
 
+/**
+ * 获取 api 数据
+ * @param {*} params 
+ * @returns 
+ */
 const getDataApiId = async params => {
 	let data = {}
 	let apiId = params.apiId
@@ -72,7 +81,12 @@ const getDataApiId = async params => {
 	return data
 }
 
-// 新增修改
+/**
+ * 新增修改
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
 const api_update = async (req, res, next) => {
 	let _m = req.method
 	if (_m == 'GET') {
@@ -143,7 +157,6 @@ const api_del = async (req, res, next) => {
 		logger.info('modelDel failed due to DB error', err)
 		page_data = G.HTTP_MSG_Err
 	} finally {
-		// res.json(page_data)
 		return resJson(res, page_data)
 	}
 }

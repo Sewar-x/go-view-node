@@ -80,7 +80,7 @@ const login = async (req, res, next) => {
   try {
     let { username, password } = req.getReqParams()
     let user = await Users.findOne({ where: { username: username }, raw: true })
-  
+
     if (!user) {
       return res.sendError({
         msg: `未找到对应的用户 ${username}，请核查！`
@@ -95,7 +95,11 @@ const login = async (req, res, next) => {
     }
     let token = await tokenKit().createToken(user)
     // 设置 cookie
-    res.cookie(TOKEN.tokenCookiesKey, token)
+    res.cookie(TOKEN.tokenCookiesKey, token, {
+      httpOnly: true,
+      secure: false,
+      sameSite: 'none'
+    })
     let userData = {
       token: {
         tokenName: 'Authorization',

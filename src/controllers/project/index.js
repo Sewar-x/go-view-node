@@ -93,9 +93,15 @@ const project_delete = async (req, res, next) => {
   }
 }
 
+/**
+ * 根据项目 id 查询项目数据
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ * @returns 
+ */
 const project_by_id = async (req, res, next) => {
-  let _m = req.method
-  let res_data = { code: 0, data: {}, msg: '' }
+
   try {
     let { projectId } = req.query
     let data = {}
@@ -105,80 +111,91 @@ const project_by_id = async (req, res, next) => {
       data.content = projectdatas.contentData
     } else {
       data.content = '{}'
-      // res_data.code = 200
-      // res_data.msg = '未找到子表数据'
     }
-    res_data.data = data
-    res_data.msg = '操作成功'
-    res_data.code = 200
+    return res.sendResponse({
+      data
+    })
   } catch (error) {
-    res_data.code = 500
-    res_data.msg = error
+    return res.sendError({
+      data: error
+    })
   }
-  return res.json(res_data)
 }
 
-// 修改项目
+/**
+ * 编辑项目
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ * @returns 
+ */
 const project_edit = async (req, res, next) => {
-  let _m = req.method
-  let res_data = { code: 0, msg: '' }
   try {
-    let { id, indexImage, projectName, remarks } = req.body
-   
     let ok = await projectServ.setProjectUpsert(req.body)
-
-    res_data.msg = '操作成功'
-    res_data.code = 200
+    return res.sendResponse({
+      data: ok
+    })
   } catch (error) {
-    res_data.code = 500
-    res_data.msg = error
+    return res.sendError({
+      data: error
+    })
   }
-  return res.json(res_data)
 }
 
-// 修改发布状态
+/**
+ * 修改发布状态
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ * @returns 
+ */
 const project_publish = async (req, res, next) => {
-  let _m = req.method
-  let res_data = { code: 0, msg: '' }
+
   try {
     // "id": "686921059995357184", //项目主键
     // "state": "-1" //项目状态[-1未发布,1发布]
     let { id, state } = req.body
-
     let ok = await projectServ.project_publish({ id, state })
-    res_data.msg = '操作成功'
-    res_data.code = 200
+    return res.sendResponse({
+      data: ok
+    })
   } catch (error) {
-    res_data.code = 500
-    res_data.msg = error
+    return res.sendError({
+      data: error
+    })
   }
-  return res.json(res_data)
 }
 
-// 保存项目数据
+/**
+ * 保存项目数据
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ * @returns 
+ */
 const project_data_save = async (req, res, next) => {
-  let _m = req.method
-  let res_data = { code: 0, msg: '', data: {} }
   try {
-    // projectId 687926057864663040
-    // content 1111
     let { projectId, content } = req.body
     let data = await projectServ.project_data_save({ projectId, content })
-    res_data.msg = '操作成功'
-    res_data.code = 200
-    res_data.data = data
+    return res.sendResponse({
+      data
+    })
   } catch (error) {
-    console.log('error: ', error)
-    res_data.code = 500
-    res_data.msg = error
+    return res.sendError({
+      data: error
+    })
   }
-  return res.json(res_data)
 }
 
-// 项目截图上传
+/**
+ *  项目截图上传
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ * @returns 
+ */
 const project_upload = async (req, res, next) => {
-  let _m = req.method
-  let res_data = { code: 0, msg: '', data: {} }
+
   let uploadDir = SYSTEM.UPLOAD_PATH
   if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir)
@@ -193,10 +210,11 @@ const project_upload = async (req, res, next) => {
     })
     form.parse(req, function (err, fields, files) {
       if (err) {
-        console.log('parse error: ' + err)
-        res_data.code = 500
-        res_data.msg = '写文件操作失败。'
-        return res.json(res_data)
+
+        return res.sendError({
+          data: err,
+          msg: '写文件操作失败!'
+        })
       } else {
         // let filesTmp = JSON.stringify(files, null, 2)
         // console.log('parse files: ' + filesTmp)
@@ -226,34 +244,43 @@ const project_upload = async (req, res, next) => {
               updateUserName: '',
               updateTime: new Date()
             }
-            res_data.code = 200
-            res_data.data = data
-            res_data.msg = '上传成功！'
-            return res.json(res_data)
+
+            return res.sendResponse({
+              data,
+              msg: '上传成功！'
+            })
           })
           .catch(function (err) {
             console.log('upload failed ', err)
-            res_data.code = 500
-            res_data.msg = '上传失败！'
-            return res.json(res_data)
+            return res.sendError({
+              data: err,
+              msg: '上传失败！'
+            })
           })
       }
     })
   } catch (error) {
-    res_data.code = 500
-    res_data.msg = error
-    return res.json(res_data)
+    return res.sendError({
+      data: error,
+      msg: '上传失败！'
+    })
   }
 }
 
-// 获取图片
+/**
+ * 获取图片
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ * @returns 
+ */
 const project_get_images = async (req, res, next) => {
-  let res_data = { code: 0, msg: '', data: {} }
   let fileName = req.params.id
   if (!fileName) {
-    res_data.code = 500
-    res_data.msg = '前端传给过来的id(文件名)为空！'
-    return res.json(res_data)
+    return res.sendError({
+      data: {},
+      msg: '请传入 id(文件名)！'
+    })
   }
   try {
     let uploadDir = SYSTEM.UPLOAD_PATH
@@ -263,11 +290,12 @@ const project_get_images = async (req, res, next) => {
     let file_path = path.join(uploadDir, fileName)
     let has_file = fs.statSync(file_path).isFile()
     if (!has_file) {
-      res_data.code = 500
-      res_data.msg = '文件不存在！'
-      return res.json(res_data)
+      return res.sendError({
+        data: {},
+        msg: '文件不存在！'
+      })
     }
-    // 必须要按照如下设置，否则goview无法访问到图片
+    // 允许跨域：必须要按照如下设置，否则无法访问到图片
     res.writeHead('200', {
       'Content-Type': 'image/jpeg',
       // 设置允许所有端口访问
@@ -291,9 +319,9 @@ const project_get_images = async (req, res, next) => {
       })
     }
   } catch (error) {
-    res_data.code = 500
-    res_data.msg = error
-    return res.json(res_data)
+    return res.sendError({
+      data: error,
+    })
   }
 }
 
