@@ -1,3 +1,6 @@
+/**
+ * 构建 docker 脚本
+ */
 const path = require('path');
 const spawn = require('cross-spawn');
 

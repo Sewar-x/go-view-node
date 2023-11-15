@@ -30,8 +30,6 @@ docker image build -t low-code-node .
 echo "docker 保存镜像..."
 docker save  low-code-node > ./package/lowcode.tar
 
-echo "上传 docker 镜像..."
-npm run upload:prod
 
 # 检查拉取是否成功
 # if [ $? -eq 0 ]; then
