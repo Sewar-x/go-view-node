@@ -3,6 +3,8 @@ const { build } = require("./build.js");
 const { upload } = require("./upload.js");
 const axios = require('axios');
 
+
+
 /**
  * 解压 docker 包
  */
@@ -20,6 +22,7 @@ const decompress = async () => {
     console.error(err)
   }
 }
+
 
 /**
  * 发布脚本
@@ -39,4 +42,15 @@ const deploy = async () => {
   }
 }
 
-deploy()
+const startDeploy = async () => {
+  const eventMap = {
+    "build": build,
+    "upload": upload,
+    "decompress": decompress
+  }
+  const comd = process.argv[2]
+  const event = eventMap[comd] || deploy
+  event && await event()
+}
+
+startDeploy()
