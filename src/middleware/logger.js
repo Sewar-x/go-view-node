@@ -5,26 +5,39 @@
  */
 
 const log4js = require('log4js')
-const { LOG } = require('@config/index.js')
+const { LOG, SYSTEM } = require('@config/index.js')
+const { red } = require('color-name')
 // 日志配置
 log4js.configure({
-  //指定要记录的日志分类
+  PM2: SYSTEM.USE_PM2,
+  // 定义日志各种分类执行的事件
   appenders: {
     error: {
       // 错误日志
       type: 'dateFile',
       filename: `${LOG.LOG_CONFIG.dir}/error/error`,
       pattern: 'yyyy-MM-dd.log',
-      alwaysIncludePattern: true
+      alwaysIncludePattern: true,
+      layout: { type: "coloured" }
     },
     info: {
       // 普通日志
       type: 'dateFile',
       filename: `${LOG.LOG_CONFIG.dir}/info/info`,
       pattern: 'yyyy-MM-dd.log',
-      alwaysIncludePattern: true
-    }
+      alwaysIncludePattern: true,
+      layout: { type: "coloured" } // 输出带颜色的日志信息
+    },
+    debug: {
+      // 调试日志
+      type: 'dateFile',
+      filename: `${LOG.LOG_CONFIG.dir}/debug/info`,
+      pattern: 'yyyy-MM-dd.log',
+      alwaysIncludePattern: true,
+      layout: { type: "coloured" } // 输出带颜色的日志信息
+    },
   },
+  //指定要记录的日志分类
   categories: {
     error: {
       appenders: ['error'],
@@ -33,6 +46,10 @@ log4js.configure({
     info: {
       appenders: ['info'],
       level: 'info'
+    },
+    debug: {
+      appenders: ['debug'],
+      level: 'debug'
     },
     default: {
       //默认日志
@@ -45,7 +62,7 @@ log4js.configure({
 // 创建日志记录器
 const errorLogger = log4js.getLogger('error')
 const infoLogger = log4js.getLogger('info')
-
+const debugLogger = log4js.getLogger('debug')
 // 定义 middleware 函数
 const loggerMiddleware = (req, res, next) => {
   // 保存当前时间
@@ -99,16 +116,20 @@ const loggerMiddleware = (req, res, next) => {
 
   // 在发生错误时记录日志
   res.on('error', errorHandler)
-
+  res.log = log
   next()
 }
 
 // 输出存储信息函数
 const log = (errorType, message) => {
   // 根据错误类型选择日志记录器
-  const logger = errorType === 'error' ? errorLogger : infoLogger
-
-  logger.info(message)
+  const logMap = {
+    'error': errorLogger,
+    'info': infoLogger,
+    'debug': debugLogger
+  }
+  logger = logMap[errorType] || infoLogger
+  logger[errorType](message)
 }
 
 // 导出模块

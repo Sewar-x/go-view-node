@@ -7,7 +7,6 @@ const multiparty = require('multiparty')
 const moment = require('moment')
 const projectServ = require('@services/project')
 const File = require('@utils/File')
-
 /**
  * 获取项目列表
  * @param {*} req
@@ -132,10 +131,13 @@ const project_by_id = async (req, res, next) => {
 const project_edit = async (req, res, next) => {
   try {
     let ok = await projectServ.setProjectUpsert(req.body)
+
+    res.log('debug', `edit project info==${JSON.stringify(ok)}, re1= ${req}, res=${res}`)
     return res.sendResponse({
       data: ok
     })
   } catch (error) {
+    res.log('debug', `edit project  error==${JSON.stringify(error)}, re1= ${req}, res=${res}`)
     return res.sendError({
       data: error
     })
@@ -177,10 +179,12 @@ const project_data_save = async (req, res, next) => {
   try {
     let { projectId, content } = req.body
     let data = await projectServ.project_data_save({ projectId, content })
+    res.log('debug', `save project info==${JSON.stringify(data)}, re1= ${req}, res=${res}`)
     return res.sendResponse({
       data
     })
   } catch (error) {
+    res.log('debug', `save project error==${JSON.stringify(error)}, re1= ${req}, res=${res}`)
     return res.sendError({
       data: error
     })

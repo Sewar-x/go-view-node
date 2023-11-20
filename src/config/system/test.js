@@ -15,5 +15,6 @@ module.exports = {
   OSS_PORT: 8080,
   CORS_WHITElIST: [`http://localhost:${app.PORT}`, 'http://10.126.16.116:9991/api/goview/', 'http://10.126.16.116:8080'],
   DEBUG: true,
-  AXIOS_BASEURL: ''
+  AXIOS_BASEURL: '',
+  USE_PM2: true //是否使用 pm2 运行node
 }
