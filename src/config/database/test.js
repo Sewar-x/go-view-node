@@ -32,7 +32,8 @@ const sequelizeConfig = {
             charset: DB.CHARSET,// 连接字符集，用于MySQL。默认为utf8mb4
             supportBigNumbers: true, // 是否支持大数字，用于MySQL。默认为true。
             bigNumberStrings: true,//是否将大数字作为字符串返回，用于MySQL。默认为false。
-            decimalNumbers: true
+            decimalNumbers: true,
+            connectTimeout: 60000 // 设置连接超时时间为60秒（单位为毫秒）
         },
         timezone: DB.TIMEZONE,
         define: {
