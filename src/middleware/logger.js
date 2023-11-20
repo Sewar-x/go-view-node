@@ -20,7 +20,7 @@ log4js.configure({
     info: {
       // 普通日志
       type: 'dateFile',
-      filename: `${LOG.LOG_CONFIG.dir}/error/info`,
+      filename: `${LOG.LOG_CONFIG.dir}/info/info`,
       pattern: 'yyyy-MM-dd.log',
       alwaysIncludePattern: true
     }

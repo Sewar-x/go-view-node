@@ -7,7 +7,9 @@ const { getFiles } = require('@utils/File.js')
 
 const env = process.env.NODE_ENV || 'development'
 const getJsFiles = ({ path, filename, content }) => {
+  // 获取文件扩展名
   let extname = Path.extname(filename)
+  // 获取文件名
   let name = Path.basename(filename, extname)
   if(name === env) {
     let folderName = Path.basename(path, extname)
