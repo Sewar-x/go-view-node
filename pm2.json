@@ -7,7 +7,7 @@
       "exec_mode": "fork",
       "log_date_format": "YYYY-MM-DD HH:mm Z",
       "watch": true,
-      "ignore_watch": ["node_modules", "logs"],
+      "ignore_watch": ["node_modules", "logs","tmp","package","doc","db"],
       "merge_logs": true,
       "min_uptime": "20s",
       "out_file": "./logs/pm2/project_api_out.log",
