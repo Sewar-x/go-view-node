@@ -1,6 +1,6 @@
 'use strict'
 
-const DB = require('@plugins/db/db')
+const DB = require('@plugins/db/index.js')
 const { DATABASE, SYSTEM } = require('@config')
 const dbInstance = new DB({
   sequelizeConfig: DATABASE.sequelizeConfig,
@@ -26,11 +26,11 @@ let db = {
   sequelize,
   dbType,
   dbName,
-  ...models,
   tabs,
-  dbHelper
+  dbHelper,
+  ...models,
 }
-
+// 全局挂载 db 对象，需要使用的模块直接使用 db 变量即可
 global.db = db
 
 module.exports = app => {

@@ -1,7 +1,7 @@
 'use strict'
 
 const { sequelize, Projects, Projectdatas } = db
-
+const { log } = require('@middleware/logger.js')
 /**
  * 获取项目列表
  * @param {*} param0
@@ -42,34 +42,37 @@ const getProjectList = async ({ page, limit }) => {
 const setProjectUpsert = async params => {
   let data = {}
   try {
-    let { projectName, indexImage, remarks } = params
-
+    let { projectName = null, indexImage = null, remarks = null } = params
+    log('debug', `setProjectUpsert params ==${JSON.stringify(params)}`)
     if (params.hasOwnProperty('id')) {
       //判断是否有项目 id，存在更新
       let id = params.id
       data = await Projects.findOne({ where: { id: id }, raw: true })
+      log('debug', `setProjectUpsert data1 ==${JSON.stringify(data)}`)
       if (data) {
         //存在项目，更新数据
         await Projects.update({ projectName, indexImage, remarks }, { where: { id: id } })
         data = await Projects.findOne({ where: { id: id }, raw: true })
+        log('debug', `setProjectUpsert data2 ==${JSON.stringify(data)}`)
       }
     } else {
       //不存在项目 id，创建项目
-        data = await Projects.create(
-          { 
-            createUserId: params?.user?.id,
-            projectName, 
-            indexImage, 
-            remarks, 
-            state: -1, 
-            isDelete: -1, 
-            createTime: new Date() 
-          },
-          { 
-            returning: true, 
-            raw: true 
-          }
-        )
+      data = await Projects.create(
+        {
+          createUserId: params?.user?.id,
+          projectName,
+          indexImage,
+          remarks,
+          state: -1,
+          isDelete: -1,
+          createTime: new Date()
+        },
+        {
+          returning: true,
+          raw: true
+        }
+      )
+      log('debug', `setProjectUpsert data3 ==${JSON.stringify(data)}`)
     }
   } catch (err) {
     return err
@@ -122,14 +125,12 @@ const project_publish = async ({ id: projectId, state }) => {
   let ok = false
   try {
     let data = await Projects.findOne({ where: { id: projectId }, raw: true })
-    console.log('project_publish data: ', data)
     if (data) {
       await Projects.update({ state: state }, { where: { id: projectId } })
       ok = true
     }
   } catch (err) {
-    console.log('project_publish failed due to DB error', err)
-    return data
+    return err
   } finally {
   }
   return ok
@@ -149,7 +150,6 @@ const project_data_save = async ({ projectId, content: contentData }) => {
     data = await Projectdatas.findOne({ where: { projectId: projectId }, raw: true, transaction: transaction })
     await transaction.commit()
   } catch (err) {
-    console.log('project_data_save failed due to DB error', err)
     if (transaction) await transaction.rollback()
     return data
   } finally {

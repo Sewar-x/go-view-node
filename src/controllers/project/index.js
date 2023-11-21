@@ -130,6 +130,7 @@ const project_by_id = async (req, res, next) => {
  */
 const project_edit = async (req, res, next) => {
   try {
+    res.log('debug', `项目编辑入口`)
     let ok = await projectServ.setProjectUpsert(req.body)
 
     res.log('debug', `edit project info==${JSON.stringify(ok)}, re1= ${req}, res=${res}`)
@@ -179,12 +180,10 @@ const project_data_save = async (req, res, next) => {
   try {
     let { projectId, content } = req.body
     let data = await projectServ.project_data_save({ projectId, content })
-    res.log('debug', `save project info==${JSON.stringify(data)}, re1= ${req}, res=${res}`)
     return res.sendResponse({
       data
     })
   } catch (error) {
-    res.log('debug', `save project error==${JSON.stringify(error)}, re1= ${req}, res=${res}`)
     return res.sendError({
       data: error
     })
@@ -220,8 +219,6 @@ const project_upload = async (req, res, next) => {
           msg: '写文件操作失败!'
         })
       } else {
-        // let filesTmp = JSON.stringify(files, null, 2)
-        // console.log('parse files: ' + filesTmp)
         let file_info = files.object[0]
         let file_size = file_info.size
         let uploadedPath = file_info.path
