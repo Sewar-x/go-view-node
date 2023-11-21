@@ -6,7 +6,7 @@ module.exports = {
     exec_mode: 'fork',      //开启cluster集群模式
     instances: 1,            //根据cpu可用核数运行最大数量的node应用实例
     watch: true,                //开启监听模式，任意文件内容发生改变，都会重启node应用
-    ignore_watch: ["node_modules", "logs"],     //监听模式下，忽略的文件列表
+    ignore_watch: ["node_modules", "logs", "tmp", "package", "doc", "db"],     //监听模式下，忽略的文件列表
     env: {                     //默认的环境变量
       NODE_ENV: "production",
       MODE: "default"
@@ -26,7 +26,7 @@ module.exports = {
     production: {
       key: "", // 指定 SSH 密钥,带有公钥路径的“key”属性
       user: 'root', // 权限验证用户名                                                       
-      host: '', //服务器ip地址
+      host: 'http://10.126.16.116', //服务器ip地址
       ref: '', //需要拉取的仓库分支
       repo: '', //仓库地址
       path: '', //需要发布到服务器的路径
@@ -39,7 +39,7 @@ module.exports = {
     test: {
       key: "", // 指定 SSH 密钥,带有公钥路径的“key”属性
       user: 'root', //服务器用户名  
-      host: '10.208.45.61',//服务器ip地址
+      host: '',//服务器ip地址
       ref: '',//需要拉取的仓库分支
       repo: '', //仓库地址
       path: '',//需要发布到服务器的路径
