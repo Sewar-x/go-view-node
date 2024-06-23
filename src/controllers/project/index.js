@@ -7,6 +7,7 @@ const multiparty = require('multiparty')
 const moment = require('moment')
 const projectServ = require('@services/project')
 const File = require('@utils/File')
+const { log } = require('@middleware/logger.js')
 /**
  * 获取项目列表
  * @param {*} req
@@ -209,7 +210,7 @@ const project_upload = async (req, res, next) => {
       uploadDir: uploadDir
     })
     form.on('error', function (err) {
-      console.log('Error parsing form: ' + err.stack)
+      log('error', err.stack)
     })
     form.parse(req, function (err, fields, files) {
       if (err) {
@@ -228,7 +229,7 @@ const project_upload = async (req, res, next) => {
         File.rename(uploadedPath, dstPath)
           .then(err => {
             if (err) {
-              console.log('重命名文件错误：' + err)
+              log('error', '重命名文件错误：' + err)
             } else {
               console.log('重命名文件成功。')
             }

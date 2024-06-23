@@ -40,7 +40,39 @@ npm run pm2:prod
 ```shell
 npm run sqlserver
 ```
-
+#### 命令行
+```js
+// 本地开发环境
+ "start": "node cross-env NODE_ENV=development ./src/server.js", 
+ // 本地开发环境
+  "dev": "cross-env NODE_ENV=development nodemon ./src/server.js",
+  //本地链接生产环境
+  "prod": "cross-env NODE_ENV=production node ./src/server.js",
+  //本地链接测试环境
+  "test": "cross-env NODE_ENV=test nodemon ./src/server.js",
+  //sql服务
+  "sqlserver": "cross-env NODE_ENV=test node ./src/server.js",
+  //pm2 测试环境
+  "pm2:test": "pm2-runtime start pm2.json --env test",
+  //pm2 生产环境
+  "pm2:prod": "pm2-runtime start pm2.json --env production",
+  // 构建docker测试环境
+  "build:test": "cross-env NODE_ENV=test && node ./deploy/index.js build",
+  // 构建docker生产环境
+  "build:prod": "cross-env NODE_ENV=production && node ./deploy/index.js build",
+  //上传docker包到测试服
+  "upload:test": "cross-env NODE_ENV=test && node ./deploy/index.js upload",
+  //上传docker包到正式服
+  "upload:prod": "cross-env NODE_ENV=production && node ./deploy/index.js upload",
+  //解压测试服docker包
+  "decompress:test": "cross-env NODE_ENV=production && node ./deploy/index.js decompress",
+  //解压正式服docker包
+  "decompress:prod": "cross-env NODE_ENV=production && node ./deploy/index.js decompress",
+  //构建、上传、解压docker测试服包
+  "deploy:test": "cross-env NODE_ENV=test && node ./deploy/index.js",
+  //构建、上传、解压docker正式包
+  "deploy:prod": "cross-env NODE_ENV=production && node ./deploy/index.js"
+```
 ### 部署发布
 
 
@@ -81,28 +113,28 @@ npm run upload:prod
 
 ## 技术栈
 
-| 技术         | 技术栈                                                       | 作用                                            |
-| ------------ | ------------------------------------------------------------ | ----------------------------------------------- |
-| 开发语言     | Node.js                                                      |                                                 |
-|              |                                                              |                                                 |
-| 框架         | express 4.x                                                  |                                                 |
-|              | express.static                                               | 静态文件服务                                    |
-|              |                                                              |                                                 |
-| 中间件       | body-parser                                                  | 解析 HTTP 请求的请求体                          |
-|              | cookie-parse                                                 | 解析 HTTP 请求中的 cookie                       |
-|              | log4js                                                       | 日志管理模块                                    |
-|              | axios                                                        |                                                 |
-|              |                                                              |                                                 |
-| 插件         | pathParse.js（自定义）                                       | 获取文件夹路径下所有文件对象挂载到 app 实例对象 |
-|              | token.js                                                     |                                                 |
-|              |                                                              |                                                 |
-| 数据库       | MySQL                                                        |                                                 |
-|              |                                                              |                                                 |
+| 技术         | 技术栈                                                               | 作用                                            |
+| ------------ | -------------------------------------------------------------------- | ----------------------------------------------- |
+| 开发语言     | Node.js                                                              |                                                 |
+|              |                                                                      |                                                 |
+| 框架         | express 4.x                                                          |                                                 |
+|              | express.static                                                       | 静态文件服务                                    |
+|              |                                                                      |                                                 |
+| 中间件       | body-parser                                                          | 解析 HTTP 请求的请求体                          |
+|              | cookie-parse                                                         | 解析 HTTP 请求中的 cookie                       |
+|              | log4js                                                               | 日志管理模块                                    |
+|              | axios                                                                |                                                 |
+|              |                                                                      |                                                 |
+| 插件         | pathParse.js（自定义）                                               | 获取文件夹路径下所有文件对象挂载到 app 实例对象 |
+|              | token.js                                                             |                                                 |
+|              |                                                                      |                                                 |
+| 数据库       | MySQL                                                                |                                                 |
+|              |                                                                      |                                                 |
 | Node.js  ORM | [Sequelize](https://en.wikipedia.org/wiki/Object-relational_mapping) |                                                 |
-|              |                                                              |                                                 |
-| 进程管理     | [pm2](https://pm2.fenxianglu.cn/docs/start/#google_vignette) |                                                 |
-|              |                                                              |                                                 |
-| 容器         | docker                                                       |                                                 |
+|              |                                                                      |                                                 |
+| 进程管理     | [pm2](https://pm2.fenxianglu.cn/docs/start/#google_vignette)         |                                                 |
+|              |                                                                      |                                                 |
+| 容器         | docker                                                               |                                                 |
 
 
 
@@ -685,7 +717,7 @@ npm install --save oracledb # Oracle Database
 
   * 监听 webhook 推送任务：在路由中，新增 webhook 推送路由；
 
-    ```
+    ```js
     'use strict'
     const { webhook } = require('../../../deploy/webhook')
     module.exports = (app, router) => {
@@ -698,7 +730,7 @@ npm install --save oracledb # Oracle Database
 
   * webhook 任务接受脚本：验证 webhook 推送签名，并执行 bash 脚本
 
-    ```
+    ```js
     /**
      * webhook  自动部署测试 
      */
@@ -802,9 +834,10 @@ npm install --save oracledb # Oracle Database
 
 * [docker 官方文档](https://docs.docker.com/get-docker/)
 * [docker 教程(阮一峰)](https://ruanyifeng.com/blog/2018/02/docker-tutorial.html)
+* [Docker 从入门到实践](https://www.w3cschool.cn/reqsgr/)
 * [pm2](https://pm2.fenxianglu.cn/docs/start/)
 
 
 
-## 服务器错误排查
+
 

@@ -43,17 +43,14 @@ const setProjectUpsert = async params => {
   let data = {}
   try {
     let { projectName = null, indexImage = null, remarks = null } = params
-    log('debug', `setProjectUpsert params ==${JSON.stringify(params)}`)
     if (params.hasOwnProperty('id')) {
       //判断是否有项目 id，存在更新
       let id = params.id
       data = await Projects.findOne({ where: { id: id }, raw: true })
-      log('debug', `setProjectUpsert data1 ==${JSON.stringify(data)}`)
       if (data) {
         //存在项目，更新数据
         await Projects.update({ projectName, indexImage, remarks }, { where: { id: id } })
         data = await Projects.findOne({ where: { id: id }, raw: true })
-        log('debug', `setProjectUpsert data2 ==${JSON.stringify(data)}`)
       }
     } else {
       //不存在项目 id，创建项目
@@ -72,7 +69,6 @@ const setProjectUpsert = async params => {
           raw: true
         }
       )
-      log('debug', `setProjectUpsert data3 ==${JSON.stringify(data)}`)
     }
   } catch (err) {
     return err

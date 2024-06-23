@@ -26,6 +26,11 @@ const getFiles = ({ path, content, onlyIndexFiles, filesName = null, filesNameto
   })
 }
 
+/**
+ * 获取路径下js文件
+ * @param {*} param0 
+ * @returns 
+ */
 const getJsFiles = ({ path, filename, content, onlyIndexFiles, filesName = null, filesNametoUpperCase = false }) => {
   let extname = Path.extname(filename)
   let name = Path.basename(filename, extname)
@@ -51,6 +56,12 @@ const getJsFiles = ({ path, filename, content, onlyIndexFiles, filesName = null,
   return content
 }
 
+/**
+ * 文件重命名
+ * @param {*} _old 
+ * @param {*} _new 
+ * @returns 
+ */
 const rename = (_old, _new) => {
   return new Promise((resolve, reject) => {
     fs.rename(_old, _new, function (err) {
